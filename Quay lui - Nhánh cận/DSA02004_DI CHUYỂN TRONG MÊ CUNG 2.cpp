@@ -1,57 +1,80 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int n, a[100][100];
-bool check;
+int dx[4] = {1, 0, 0, -1};
+int dy[4] = {0, 1, -1, 0};
 
-string path = "DLRU";
-pair<int, int> p[] = {{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
+int n;
+bool visited[1001][1001];
+vector<string> res;
+int a[1001][1001];
 
-void Try(int i, int j, string s){
-    if(!a[1][1])return;
-    if(i == n && j == n){
-        check = true;
-        cout << s << ' ';
-        return;
-    }
+void nhap() {
+	res.clear();
+	memset(visited, false, sizeof(visited));
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cin >> a[i][j];
+		}
+	}
+}
 
-    for(int k = 0; k < 4; k++){
-        int inew = p[k].first + i;
-        int jnew = p[k].second + j;
-        if(inew >= 1 && inew <= n && jnew >= 1 && jnew <= n && a[inew][jnew]){
-            a[inew][jnew] = 0;
-            s += path[k];
-            Try(inew, jnew, s);
-
-            a[inew][jnew] = 1;
-            s.pop_back();
-        }
-    }
+void Try(int i, int j, string s) {
+	if (i == n && j == n) {
+		res.push_back(s);
+		return;
+	}
+	for (int k = 0; k < 4; k++) {
+		int i1 = i + dx[k];
+		int j1 = j + dy[k];
+		if (i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= n && !visited[i1][j1] && a[i1][j1] == 1) {
+			if (k == 0) {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "D");
+				visited[i1][j1] = false;
+			}
+			else if (k == 1) {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "R");
+				visited[i1][j1] = false;
+			}
+			else if (k == 2) {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "L");
+				visited[i1][j1] = false;
+			}
+			else {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "U");
+				visited[i1][j1] = false;
+			}
+		}
+	}
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        cin >> n;
-        check = false;
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= n; j++){
-                cin >> a[i][j];
-            }
-        }
-        Try(1, 1, "");
-        if(!check)
-            cout << -1 << endl;
-        else
-            cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		if (a[1][1] == 1) {
+			visited[1][1] = true;
+			Try(1, 1, "");
+			visited[1][1] = false;
+		}
+		if (res.size() == 0) cout << "-1" << endl;
+		else {
+			sort(res.begin(), res.end());
+			for (string s : res) cout << s << " ";
+			cout << endl;
+		}
+	}
+	return 0;
 }
-/*
 
-*/
+
+

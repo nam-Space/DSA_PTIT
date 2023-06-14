@@ -1,46 +1,77 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+
+bool nhoNhat(int s, int n) {
+	stack<int> st;
+	while(s > 0) {
+		if (s >= 9) {
+			st.push(9);
+			s -= 9;
+			n--;
+		}
+		else {
+			st.push(s);
+			s = 0;
+			n--;
+		}
+	}
+	if (n < 0) return false;
+	if (n > 0) {
+		int so = st.top(); st.pop();
+		st.push(so - 1);
+		while(n > 1) {
+			st.push(0);
+			n--;
+		}
+		st.push(1);
+		n--;
+	}
+	while(!st.empty()) {
+		cout << st.top();
+		st.pop();
+	}
+	cout << " ";
+	return true;
+}
+
+bool lonNhat(int s, int n) {
+	stack<int> st;
+	while(s > 0) {
+		if (s >= 9) {
+			st.push(9);
+			s -= 9;
+			n--;
+		}
+		else {
+			st.push(s);
+			s = 0;
+			n--;
+		}
+	}
+	if (n < 0) return false;
+	while(n > 0) {
+		st.push(0);
+		n--;
+	}
+	vector<int> res;
+	while(!st.empty()) {
+		res.push_back(st.top());
+		st.pop();
+	}
+	reverse(res.begin(), res.end());
+	for (int x : res) cout << x;
+	return true;
+}
 
 int main(){
-    quick();
-    int s, d; cin >> d >> s;
-    if(s > d * 9 || d > 1 && s == 0){
-        cout << -1 << ' ' << -1 << endl;
-        return 0;
-    }else{
-        int S = s;
-        vector<int> ans1(d, 0), ans2(d, 0);
-        s--;
-        for(int i = d - 1; i >= 0; i--){
-            if(s > 9){
-                ans1[i] = 9;
-                s -= 9;
-            }else{
-                ans1[i] = s;
-                s = 0;
-            }
-        }
-        ans1[0] += 1;
-        for(int i = 0; i < d; i++)cout << ans1[i];
-        cout << ' ';
-        for(int i = 0; i <= d - 1; i++){
-            if(S > 9){
-                ans2[i] = 9;
-                S -= 9;
-            }else{
-                ans2[i] = S;
-                S = 0;
-            }
-        }
-        for(int i = 0; i < d; i++)cout << ans2[i];
-        cout << endl;
-    }
+	int t;
+	t = 1;
+	while(t--) {
+		int n, s;
+		cin >> n >> s;
+		if (s == 0 || !nhoNhat(s, n) || !lonNhat(s, n)) cout << "-1 -1" << endl;
+	} 
 }
-/*
 
-*/

@@ -1,62 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int n, m, test, u, s, t, cnt;
-vector<int> adj[1001], udr_adj[1001];
-vector<pair<int, int>> edge;
-int visited[1001], deg_plus[1001], deg_dis[1001];
+const int mod = 1e9 + 7;
 
-void dfs(int u){
-    visited[u] = 1;
-    for(int x : adj[u]){
-        if(!visited[x]){
-            dfs(x);
-        }
-    }
+int n, m;
+vector<int> adj[1001];
+int in[1001], out[1001];
+bool visited[1001];
+
+void nhap() {
+	for (int i = 0; i < 1001; i++) {
+		adj[i].clear();
+	}
+	memset(visited, false, sizeof(visited));
+	memset(in, 0, sizeof(in));
+	memset(out, 0, sizeof(out));
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y;
+		cin >> x >> y;
+		adj[x].push_back(y);
+		out[x]++;
+		in[y]++;
+	}
+}
+
+void dfs(int u) {
+	visited[u] = true;
+	for (int x : adj[u]) {
+		if (!visited[x]) dfs(x);
+	}
+}
+
+bool connectedComponent() {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (!visited[i]) {
+			cnt++;
+			dfs(i);
+		}
+	}
+	return cnt == 1;
+}
+
+bool eulerCycle() {
+	memset(visited, false, sizeof(visited));
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (in[i] != out[i]) return false;
+	}
+	return true;
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 0; i <= 1000; i++)adj[i].clear();
-        cin >> n >> m;
-        memset(deg_plus, 0, sizeof(deg_plus));
-        memset(deg_dis, 0, sizeof(deg_dis));
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-            udr_adj[x].pb(y);
-            deg_plus[x]++;
-            deg_dis[y]++;
-        }
-        memset(visited, 0, sizeof(visited));
-        dfs(1);
-        int count_odd = 0, kt = 0;
-        for(int i = 1; i <= n; i++){
-            if(!visited[i]){
-                cout << 0 << endl;
-                kt = 1;
-                break;
-            }
-        }
-        int count = 0;
-        if(!kt){
-            for(int i = 1; i <= n; i++){
-                if(deg_plus[i] == deg_dis[i])count++;
-            }
-            if(count == n)
-                cout << 1 << endl;
-            else
-                cout << 0 << endl;
-        }
-    }
+    int t;
+    cin >> t;
+    while(t--) {
+    	nhap();
+    	if (!connectedComponent()) {
+    		cout << "0" << endl;
+    		continue;
+		}
+		if (eulerCycle()) {
+			cout << "1" << endl;
+		}
+		else cout << "0" << endl;
+	}
 }
-/*
 
-*/

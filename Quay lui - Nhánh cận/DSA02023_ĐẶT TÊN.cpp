@@ -1,44 +1,53 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int n, k, X[100];
+string a[101];
+int x[101];
+int n, m, k, used[101];
 set<string> se;
-vector<string> v;
+int cnt;
 
-
-void out(){
-    for(int i = 1; i <= k; i++)
-        cout << v[X[i] - 1] << ' ';
-    cout << endl;
+void nhap() {
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		string s;
+		cin >> s;
+		se.insert(s);
+	}
+	n = se.size();
+	int cnt = 1;
+	for (string s : se) {
+		a[cnt++] = s;
+	}
+	for (int i = 1; i <= n; i++) {
+		x[i] = i;
+	}
 }
 
-void Try(int i){
-    for(int j = X[i - 1] + 1; j <= n; j++){
-        X[i] = j;
-        if(i == k){
-            out();
-        }else
-            Try(i + 1);
-    }
+void in() {
+	for (int i = 1; i <= k; i++) {
+		cout << a[x[i]] << " "; 
+	}
+	cout << endl;
+}
+
+void Try(int i) {
+	for (int j = x[i - 1] + 1; j <= n - k + i; j++) {
+		x[i] = j;
+		if (i == k) in();
+		else Try(i + 1);
+	}
 }
 
 int main(){
-    quick();
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++){
-        string x; cin >> x;
-        se.insert(x);
-    }
-    n = se.size();
-    for(string x : se)v.pb(x);
-    X[0] = 0;
-    Try(1);
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
 }
-/*
 
-*/

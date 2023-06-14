@@ -1,65 +1,80 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int prime[1005], test, n, p, s, X[1005], cnt;
-vector<int> v;
+int n, p, s, cnt;
+int a[201], x[201], prime[201];
 vector<vector<int>> res;
 
-void init(){
-    prime[0] = prime[1] = 1;
-    for(int i = 2; i * i <= s; i++){
-        if(!prime[i])
-        for(int j = 2 * i; j <= s; j += i){
-            prime[j] = 1;
-        }
-    }
-    for(int i = p + 1; i <= s; i++){
-        if(!prime[i])
-            v.pb(i);
-    }
+void init() {
+	for (int i = 0; i <= 200; i++) prime[i] = 1;
+	prime[0] = prime[1] = 0;
+	for (int i = 2; i <= 15; i++) {
+		if (prime[i]) {
+			for (int j = i * i; j <= 200; j += i) {
+				prime[j] = 0;
+			}
+		}
+	}
+	cnt = 0;
+	for (int i = 0; i <= 200; i++) {
+		if (prime[i]) {
+			a[++cnt] = i;
+		}
+	} 
 }
 
-void Try(int i, int pos, int k, int sum){
-    for(int j = pos; j < v.size(); j++){
-        if(v[j] > p){
-            sum += v[j];
-            X[i] = v[j];
-            k++;
-            if(sum == s && k == n){
-                cnt++;
-                vector<int> temp(X, X + i + 1);
-                res.pb(temp);
-            }else if(sum < s && k < n)
-                Try(i + 1, j + 1, k, sum);
-            sum -= v[j];
-            k--;
-        }
-    }
+void nhap() {
+	res.clear();
+	cin >> n >> p >> s;
+	for (int i = 1; i <= 200; i++) x[i] = i;
+}
+
+bool check() {
+	int sum = 0;
+	for (int i = 1; i <= n; i++) {
+		if (a[x[i]] <= p) return false;
+		sum += a[x[i]];
+	}
+	return sum == s;
+}
+
+void ghiNhan() {
+	vector<int> v;
+	for (int i = 1; i <= n; i++) {
+		v.push_back(a[x[i]]);
+	}
+	res.push_back(v);
+}
+
+void Try(int i) {
+	for (int j = x[i - 1] + 1; j <= cnt - n + i; j++) {
+		x[i] = j;
+		if (i == n) {
+			if (check()) ghiNhan();
+		}
+		else Try(i + 1);
+	}
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        cin >> n >> p >> s;
-        v.clear();
-        init();
-        cnt = 0; res.clear();
-        Try(0, 0, 0, 0);
-        cout << cnt << endl;
-        for(int i = 0; i < res.size(); i++){
-            for(int j = 0; j < res[i].size(); j++){
-                cout << res[i][j] << ' ';
-            }
-            cout << endl;
-        }
-    }
+	init();
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		Try(1);
+		sort(res.begin(), res.end());
+		cout << res.size() << endl;
+		for (vector<int> v : res) {
+			for (int x : v) cout << x << " ";
+			cout << endl;
+		}
+	}
+	return 0;
 }
-/*
 
-*/
+
+

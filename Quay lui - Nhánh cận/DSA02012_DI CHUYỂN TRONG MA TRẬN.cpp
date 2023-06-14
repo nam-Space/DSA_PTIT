@@ -1,43 +1,71 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int a[100][100], cnt, n, m;
+int dx[2] = {1, 0};
+int dy[2] = {0, 1};
 
-void Try(int i, int j){
-    if(i == n && j == m){
-        cnt++;
-        return;
-    }
+int n, m, cnt;
+bool visited[1001][1001];
+int a[1001][1001];
+vector<string> res;
 
-    if(i + 1 <= n){
-        Try(i + 1, j);
-    }
+void nhap() {
+	res.clear();
+	memset(visited, false, sizeof(visited));
+	cnt = 0;
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> a[i][j];
+		}
+	}
+}
 
-    if(j + 1 <= m){
-        Try(i, j + 1);
-    }
+void Try(int i, int j) {
+	if (i == n && j == m) {
+		cnt++;
+		return;
+	}
+	for (int k = 0; k < 2; k++) {
+		int i1 = i + dx[k];
+		int j1 = j + dy[k];
+		if (i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= m && !visited[i1][j1]) {
+			if (k == 0) {
+				visited[i1][j1] = true;
+				Try(i1, j1);
+				visited[i1][j1] = false;
+			}
+			else {
+				visited[i1][j1] = true;
+				Try(i1, j1);
+				visited[i1][j1] = false;
+			}
+		}
+	}
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        cin >> n >> m;
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= m; j++){
-                cin >> a[i][j];
-            }
-        }
-        cnt = 0;
-        Try(1, 1);
-        cout << cnt << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+//		if (a[1][1] == 1) {
+			visited[1][1] = true;
+			Try(1, 1);
+			visited[1][1] = false;
+//		}
+//		if (res.size() == 0) cout << "-1" << endl;
+//		else {
+//			sort(res.begin(), res.end());
+//			for (string s : res) cout << s << " ";
+//			cout << endl;
+//		}
+		cout << cnt << endl;
+	}
+	return 0;
 }
-/*
 
-*/
+

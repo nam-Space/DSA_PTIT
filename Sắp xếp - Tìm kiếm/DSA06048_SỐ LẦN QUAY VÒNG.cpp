@@ -1,37 +1,39 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int search(vector<ll> a, int l, int r, ll x){
-	if(l <= r){
-		int m = (l + r) / 2;
-		if(a[m] == x)return m;
-		else if(a[m] > x)return search(a, l, m - 1, x);
-		else return search(a, m + 1, r, x);
-	}else
-		return -1;
+bool check(ll a[], ll b[], int n) {
+	for (int i = 0; i < n; i++) {
+		if (a[i] != b[i]) return false;
+	}
+	return true;
 }
 
 int main(){
-	quick();
-	int test; cin >> test;
-	while(test--){
-		int n; cin >> n;
-		vector<ll> a(n);
-		int ans = 0; ll min_v = LLONG_MAX;
-		for(int i = 0; i < n; i++){
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		ll a[n], b[n];
+		for (int i = 0; i < n; i++) {
 			cin >> a[i];
-			if(a[i] < min_v){
-				min_v = a[i];
-				ans = i;
-			}
+			b[i] = a[i];
 		}
-		cout << ans << endl;
+		sort(a, a + n);
+		int k = 0;
+		while(!check(a, b, n)) {
+			k++;
+			ll tmp = b[0];
+			for (int i = 0; i < n - 1; i++) {
+				b[i] = b[i + 1];
+			}
+			b[n - 1] = tmp;
+		}
+		cout << k << endl;
 	}
+	return 0;
 }
-/*
 
-*/

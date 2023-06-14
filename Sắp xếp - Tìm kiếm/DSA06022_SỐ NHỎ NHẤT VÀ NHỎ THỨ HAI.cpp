@@ -1,29 +1,30 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-	int test; cin >> test;
-	while(test--){
-		int n; cin >> n;
-		int a[n];
-		set<int> se;
-		for(int &x : a){
-			cin >> x;
-			se.insert(x);
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		priority_queue<int, vector<int>, greater<int>> pq;
+		int *a = new int[n];
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+			pq.push(a[i]);
 		}
-		if(se.size() == 1)
-			cout << -1 << endl;
-		else{
-			auto it = se.begin();
-			cout << *it << ' ';
-			it++; cout << *it << endl;
+		int min1 = pq.top(); pq.pop();
+		if (pq.empty()) {
+			cout << "-1" << endl;
+			continue;
 		}
+		int min2 = pq.top(); pq.pop();
+		if (min1 == min2) cout << "-1" << endl;
+		else cout << min1 << " " << min2 << endl;
 	}
+	return 0;
 }
-/*
 
-*/

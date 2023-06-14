@@ -1,74 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 struct Node{
-    int val;
-    Node *left, *right;
+	int data;
+	Node *left;
+	Node *right;
+	Node(int x) {
+		data = x;
+		left = right = NULL;
+	}
 };
 
-typedef Node* Tree;
-
-Tree makeNode(int x){
-    Tree res = new Node;
-    res -> val = x;
-    res -> left = res -> right = NULL;
-    return res;
+void insert(Node *root, int n1, int n2, char c) {
+	if (root == NULL) return;
+	if (root->data == n1) {
+		if (c == 'L') root->left = new Node(n2);
+		else root->right = new Node(n2);
+	}
+	else {
+		insert(root->left, n1, n2, c);
+		insert(root->right, n1, n2, c);
+	}
 }
 
-void buildTree(Tree &X, char c, int par, int child){
-    if(X != NULL){
-        if(X -> val == par){
-            if(c == 'L')
-                X -> left = makeNode(child);
-            else
-                X -> right = makeNode(child);
-        }
-        buildTree(X -> left, c, par, child);
-        buildTree(X -> right, c, par, child);
-    }
+void bfs(Node *root) {
+	queue<Node*> q;
+	q.push(root);
+	cout << root->data << " ";
+	while(!q.empty()) {
+		int size = q.size();
+		for (int i = 0; i < size; i++) {
+			Node *tmp = q.front();
+			q.pop();
+			if (tmp->left != NULL) {
+				q.push(tmp->left);
+				cout << tmp->left->data << " ";
+			}
+			if (tmp->right != NULL) {
+				q.push(tmp->right);
+				cout << tmp->right->data << " ";
+			}
+		}
+	}
+	cout << endl;
 }
 
-void levelOrder(Tree root){
-    queue<Tree> q;
-    Tree top;
-    q.push(root);
-    while(q.size())
-    {
-        top = q.front();
-        q.pop();
-        cout << top -> val << ' ';
-        if(top -> left != NULL)
-            q.push(top -> left);
-        if(top -> right != NULL)
-            q.push(top -> right);
-    }
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		Node *root = NULL;
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			int n1, n2;
+			char c;
+			cin >> n1 >> n2 >> c;
+			if (root == NULL) {
+				root = new Node(n1);
+				if (c == 'L') root->left = new Node(n2);
+				else root->right = new Node(n2);
+			}
+			else insert(root, n1, n2, c);
+		}
+		bfs(root);
+	}
 }
 
-int main(){
-    quick();
-    int test, n; cin >> test;
-    while(test--){
-        cin >> n;
-        Tree root = NULL;
-        int par, child;
-        char c;
-        cin >> par >> child >> c;
-        root = makeNode(par);
-        buildTree(root, c, par, child);
-        --n;
-        while(n--){
-            cin >> par >> child >> c;
-            buildTree(root, c, par, child);
-        }
-        levelOrder(root);
-        cout << endl;
-    }
-}
-/*
-
-*/

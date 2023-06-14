@@ -1,27 +1,33 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int X;
-bool cmp(int a, int b){
-    return abs(X - a) < abs(X - b);
+const int mod = 1e9 + 7;
+
+int n, k;
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+	if (abs(a.first - k) == abs(b.first - k)) return a.second < b.second;
+	return abs(a.first - k) < abs(b.first - k); 
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n >> X;
-        int a[n];
-        for(int i = 0; i < n; i++)cin >> a[i];
-        stable_sort(a, a + n, cmp);
-        for(int x : a)cout << x << ' ';
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		cin >> n >> k;
+		int a[n];
+		vector<pair<int, int>> v;
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+			v.push_back({a[i], i});
+		}
+		stable_sort(v.begin(), v.end(), cmp);
+		for (auto it : v) {
+			cout << it.first << " ";
+		}
+		cout << endl;
+	}
+	return 0;
 }
-/*
 
-*/

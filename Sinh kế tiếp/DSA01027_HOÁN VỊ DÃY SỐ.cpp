@@ -1,47 +1,48 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
-int n, X[10001], a[10001], ok;
+const int mod = 1e9 + 7;
 
-void next(){
-	int i = n - 1;
-	while(i > 0 && X[i] > X[i + 1])i--;
-	if(!i)ok = 0;
-	else{
-		int k = n;
-		while(X[i] > X[k])k--;
-		swap(X[i], X[k]);
-		int l = i + 1, r = n;
-		while(l <= r){
-			swap(X[l++], X[r--]);
-		}
+int a[10001], x[10001];
+int n, k, used[10001];
+
+void nhap() {
+	memset(used, 0, sizeof(used));
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+	}
+	sort(a + 1, a + n + 1);
+	for (int i = 1; i <= n; i++) {
+		x[i] = i;
 	}
 }
 
-void out(){
-	for(int i = 1; i <= n; i++){
-		cout << a[X[i]] << ' ';
+void in() {
+	for (int i = 1; i <= n; i++) {
+		cout << a[x[i]] << " ";
 	}
 	cout << endl;
 }
 
-int main(){
-	quick();
-	cin >> n;	
-	for(int i = 1; i <= n; i++){
-		cin >> a[i];
-		X[i] = i;
-	}; 
-	sort(a + 1, a + n + 1);
-	ok = 1;
-	while(ok){
-		out();
-		next();
+void Try(int i) {
+	for (int j = 1; j <= n; j++) {
+		if (used[j] == 0) {
+			x[i] = j;
+			used[j] = 1;
+			if(i == n) in();
+			else Try(i + 1);
+			used[j] = 0;
+		}
 	}
 }
-/*
 
-*/
+int main(){
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
+}

@@ -1,29 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int main(){
-    quick();
-    int test, n, x;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        int a[10005] = {};
-        vector<int> v;
-        int ori = n;
-        while(n--){
-            cin >> x;
-            if(!a[x])
-                v.pb(x);
-            a[x] = 1;
-        }
-        cout << (is_sorted(v.begin(), v.end()) && v.size() == ori) << endl;
-    }
+struct Node{
+	int data;
+	Node *left;
+	Node *right;
+	Node(int x) {
+		data = x;
+		left = right = NULL;
+	}
+};
+
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		Node *root = NULL;
+		int n;
+		cin >> n;
+		int a[n];
+		set<int> se;
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+			se.insert(a[i]);
+		}
+		bool ok = true;
+		int cnt = 0;
+		for (int x : se) {
+			if (a[cnt++] != x) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok) cout << "1" << endl;
+		else cout << "0" << endl;
+	} 
 }
-/*
 
-*/

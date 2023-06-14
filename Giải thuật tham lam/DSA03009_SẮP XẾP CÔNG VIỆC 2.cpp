@@ -1,39 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+struct Data {
+	int id, dead, profit;
+};
+
+bool cmp(Data a, Data b) {
+	return a.profit > b.profit;
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        vector<pair<int,int>> vp(n);
-        int x;
-        for(int i = 0; i < n; i++){ 
-            cin >> x >> vp[i].first >> vp[i].second;
-        }
-        sort(vp.begin(), vp.end(), [](pair<int,int> a, pair<int,int> b) -> bool{
-            return a.second > b.second;
-        });
-        int cnt[100000] = {0};
-        ll res = 0, ans = 0;
-        for(int i = 0; i < n; i++){
-            for(int j = vp[i].first - 1; j >= 0; j--){
-                if(!cnt[j]){
-                    res += vp[i].second;
-                    ans++;
-                    cnt[j] = 1;
-                    break;
-                }
-            }
-        }
-        cout << ans << ' ' <<  res << endl;
-    }
+    int t;
+    cin >> t;
+    while(t--) {
+    	int n;
+    	cin >> n;
+    	vector<Data> jobs;
+    	for (int i = 0; i < n; i++) {
+    		int x, y, z;
+    		cin >> x >> y >> z;
+    		jobs.push_back({x, y, z});
+		}
+		sort(jobs.begin(), jobs.end(), cmp);
+		int f[1001];
+		memset(f, 0, sizeof(f));
+		int cnt = 0, res = 0;
+		for (int i = 0; i < n; i++) {
+			while(f[jobs[i].dead] == 1 && jobs[i].dead >= 1) {
+				jobs[i].dead--;
+			}
+			if (f[jobs[i].dead] == 0 && jobs[i].dead >= 1) {
+				cnt++;
+				f[jobs[i].dead] = 1;
+				res += jobs[i].profit;
+			}
+		}
+		cout << cnt << " " << res << endl;
+	}
 }
-/*
 
-*/
+

@@ -1,40 +1,51 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-bool check(string s){
-	if(s[0] != '8' || s[s.length() - 1] != '6')return false;
-	for(int i = 0; i < s.length() - 1; i++){
-		if(s[i] == '8' && s[i + 1] == '8')
-			return false;
+int x[1001];
+int n, k;
+
+void nhap() {
+	cin >> n;
+	memset(x, 0, sizeof(x));
+}
+
+void in() {
+	for (int i = 1; i <= n; i++) {
+		if (x[i] == 1) cout << "8";
+		else cout << "6";
 	}
-	for(int i = 0; i < s.length() - 3; i++){
-		if(s[i] == '6' && s[i + 1] == '6' && s[i + 2] == '6' && s[i + 3] == '6')
-			return false;
+	cout << endl;
+}
+
+bool check() {
+	if (x[1] == 0 || x[n] == 1) return false;
+	for (int i = 1; i <= n - 1; i++) {
+		if (x[i] == 1 && x[i + 1] == x[i]) return false;
+	}
+	for (int i = 1; i <= n - 3; i++) {
+		if (x[i] == 0 && x[i + 1] == x[i] && x[i + 2] == x[i + 1] && x[i + 3] == x[i + 2]) return false;
 	}
 	return true;
 }
 
-int main(){
-	quick();
-	int n; cin >> n;
-	vector<string> v;
-	queue<string> q;
-	string a = "6", b = "8";
-	q.push(a), q.push(b);
-	while(1){
-		string top = q.front(); q.pop();
-		if(top.size() > n)break;
-		if(top.size() == n && check(top))
-			v.push_back(top);
-		q.push(top + a);
-		q.push(top + b);
+void Try(int i) {
+	for (int j = 0; j <= 1; j++) {
+		x[i] = j;
+		if (i == n) {
+			if (check()) in();
+		}
+		else Try(i + 1);
 	}
-	for(string x : v)cout << x << endl;
 }
-/*
 
-*/
+int main(){
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
+}

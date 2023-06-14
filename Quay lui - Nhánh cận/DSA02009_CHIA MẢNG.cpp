@@ -1,52 +1,50 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int n, k, a[100], check, sum, unused[100];
+int n, k, sum;
+int a[101], used[101];
+bool check;
 
-void Try(int s, int cnt){
-    if(cnt == k){
-        check = 1;
-        return;
-    }
-    for(int j = 1; j <= n; j++){
-        if(!unused[j] && !check){
-            if(check)return;
-            s += a[j];
-            unused[j] = 1;
-            if(s == sum){
-                Try(0, cnt + 1);
-            }else if(s < sum)
-                Try(s, cnt);
-            s -= a[j];
-            unused[j] = 0;
-        }
-    }
+void Try(int s, int cnt) {
+	if (cnt == k) {
+		check = true;
+		return;
+	}
+	for (int j = 1; j <= n; j++) {
+		if (!used[j] && !check) {
+			used[j] = 1;
+			if (s + a[j] < sum) Try(s + a[j], cnt);
+			else if (s + a[j] == sum) Try(0, cnt + 1);
+			used[j] = 0;
+		}
+	}
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        cin >> n >> k;
-        sum = 0, check = 0;
-        for(int i = 1; i <= n; i++){
-            cin >> a[i];
-            sum += a[i];
-        }
-        if(sum % k)
-            cout << 0 << endl;
-        else{
-            sum /= k;
-            Try(0, 0);
-            cout << check << endl;
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		check = false;
+		sum = 0;
+		memset(used, 0, sizeof(used));
+		cin >> n >> k;
+		for (int i = 1; i <= n; i++) {
+			cin >> a[i];
+			sum += a[i];
+		}
+		if (sum % k != 0) {
+			cout << "0" << endl;
+			continue;
+		}
+		sum /= k;
+		Try(0, 0);
+		cout << check << endl;
+	}
+	return 0;
 }
-/*
 
-*/
+
+

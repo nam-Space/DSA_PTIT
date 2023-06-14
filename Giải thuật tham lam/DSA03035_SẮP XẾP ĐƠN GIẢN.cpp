@@ -1,22 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int n; cin >> n;
-    int a[n], b[n] = {0}, res = 0;
-    for(int &x : a)cin >> x;
-    for(int i = 0; i < n; i++){
-        b[a[i]] = b[a[i] - 1] + 1;
-        res = max(res, b[a[i]]);
-    }
-    cout << n - res;
+    int t;
+    t = 1;
+    while(t--) {
+    	int n;
+    	cin >> n;
+    	int index[n + 1];
+    	for (int i = 1; i <= n; i++) {
+    		int x; cin >> x;
+    		index[x] = i;
+		}
+		int res = INT_MAX;
+		int dem = 1;
+		int i = index[1];
+		for (int j = 2; j <= n; j++) {
+			if (index[j] > i) dem++;
+			else dem = 1;
+			i = index[j];
+			res = min(res, n - dem);
+		}
+		cout << res << endl;
+	}
 }
-/*
 
-*/
+

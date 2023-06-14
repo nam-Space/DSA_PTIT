@@ -1,30 +1,39 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        string s; cin >> s;
-        stack<char> st;
-        for(int x : s){
-            if(x == '(' || x == '[' || x == '{')
-                st.push(x);
-            else if(!st.empty())
-                if((x == ')' && st.top() == '(') || (x == ']' && st.top() == '[') || (x == '}' && st.top() == '{'))
-                    st.pop();
-        }
-        if(st.empty())
-            cout << "YES" << endl;
-        else
-            cout << "NO" << endl;
-    }
+bool check(string s) {
+	stack<char> st;
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] == '(' || s[i] == '[' || s[i] == '{') st.push(s[i]);
+		else {
+			if (s[i] == ')') {
+				if (!st.empty() && st.top() == '(') st.pop();
+			}
+			else if (s[i] == ']') {
+				if (!st.empty() && st.top() == '[') st.pop();
+			}
+			else if (s[i] == '}') {
+				if (!st.empty() && st.top() == '{') st.pop();
+			}
+		}
+	}
+	return st.empty();
 }
-/*
+ 
+int main(){
+	int t;
+	cin >> t;
+	while(t--) {
+		string s;
+		cin >> s;
+		if (check(s)) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	}
+	return 0;
+}
 
-*/
+
+

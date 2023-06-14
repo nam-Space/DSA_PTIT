@@ -1,50 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int test, n, m, visited[1001], ok;
+const int mod = 1e9 + 7;
+const int inf = 1e9;
+
+int n, m, v0;
+int x[1001];
 vector<int> adj[1001];
+bool visited[1001];
 
-void dfs(int u, int cnt){
-    if(cnt == n)ok = 1;
-    visited[u] = 1;
-    for(auto x : adj[u]){
-        if(!visited[x]){
-            dfs(x, cnt + 1);
-        }
-    }
-    visited[u] = 0;
+void nhap() {
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1001; i++) adj[i].clear();
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
+	for (int i = 1; i <= n; i++) x[i] = i;
 }
 
-int Hamilton(){
-    for(int i = 1; i <= n; i++){
-        memset(visited, 0, sizeof(visited));
-        ok = 0;
-        dfs(i, 1);
-        if(ok)return 1;
-    }
-    return 0;
+bool Hamilton(int k) {
+	for (int y : adj[x[k - 1]]) {
+		if (k == n + 1) return true;
+		else if (!visited[y]) {
+			x[k] = y;
+			visited[y] = true;
+			if (Hamilton(k + 1)) return true;
+			visited[y] = false;
+		}
+	}
+	return false;
 }
 
-int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 1; i <= 1000; i++)adj[i].clear();
-        memset(visited, 0, sizeof(visited));
-        ok = 0;
-        cin >> n >> m;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-        }
-        cout << Hamilton() << endl;
-    }
+bool hamlton_cycle() {
+	for (int i = 1; i <= n; i++) {
+		v0 = i;
+		x[1] = v0;
+		visited[v0] = true;
+		if (Hamilton(2)) return true;
+		memset(visited, false, sizeof(visited));
+	}
+	return false;
 }
-/*
 
-*/
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		if (hamlton_cycle()) cout << "1" << endl;
+		else cout << "0" << endl;
+	}
+}
+

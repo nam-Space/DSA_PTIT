@@ -1,68 +1,69 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int a[100][100],n;
-bool check;
+int dx[2] = {1, 0};
+int dy[2] = {0, 1};
 
-void in()
-{
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-    {
-        for(int j = 1; j <= n; j++)
-        {
-            cin >> a[i][j];
-        }
-    }
+int n;
+bool visited[1001][1001];
+vector<string> res;
+int a[1001][1001];
+
+void nhap() {
+	res.clear();
+	memset(visited, false, sizeof(visited));
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cin >> a[i][j];
+		}
+	}
 }
 
-void Try(int i, int j, string s)
-{
-    if(!a[1][1])
-        return;
-    if(i == n && j == n)
-    {
-        check = true;
-        cout << s << ' ';
-        return;
-    }
-
-    if(i + 1 <= n && a[i + 1][j])
-    {
-        s += 'D';
-        a[i + 1][j] = 0;
-        Try(i + 1,j,s);
-
-        a[i + 1][j] = 1;
-        s.pop_back();
-    }
-
-    if(j + 1 <= n && a[i][j + 1])
-    {
-        s += 'R';
-        a[i][j + 1] = 0;
-        Try(i,j + 1,s);
-
-        a[i][j + 1] = 1;
-        s.pop_back();
-    }
+void Try(int i, int j, string s) {
+	if (i == n && j == n) {
+		res.push_back(s);
+		return;
+	}
+	for (int k = 0; k < 2; k++) {
+		int i1 = i + dx[k];
+		int j1 = j + dy[k];
+		if (i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= n && !visited[i1][j1] && a[i1][j1] == 1) {
+			if (k == 0) {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "D");
+				visited[i1][j1] = false;
+			}
+			else {
+				visited[i1][j1] = true;
+				Try(i1, j1, s + "R");
+				visited[i1][j1] = false;
+			}
+		}
+	}
 }
+
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        in();
-        check = false;
-        Try(1,1,"");
-        if(!check)
-            cout << -1;
-        cout << endl;  
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		if (a[1][1] == 1) {
+			visited[1][1] = true;
+			Try(1, 1, "");
+			visited[1][1] = false;
+		}
+		if (res.size() == 0) cout << "-1" << endl;
+		else {
+			sort(res.begin(), res.end());
+			for (string s : res) cout << s << " ";
+			cout << endl;
+		}
+	}
+	return 0;
 }
-/*
-*/
+
+

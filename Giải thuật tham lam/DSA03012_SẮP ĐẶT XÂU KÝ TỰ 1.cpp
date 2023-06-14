@@ -1,30 +1,22 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        string s; cin >> s;
-        int d[256] = {0};
-        for(char x : s)d[x]++;
-        int max_freq = 0, sum = s.length(), kt = 0;
-        for(char x : s){
-            max_freq = max(max_freq, d[x]);
-        }
-        if(max_freq * 2 - sum > 1){
-            cout << -1 << endl;
-            kt = 1;
-            continue;
-        }
-        if(!kt)cout << 1 << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		string s;
+		cin >> s;
+		int cnt[300];
+		memset(cnt, 0, sizeof(cnt));
+		for (char x : s) {
+			cnt[x]++;
+		}
+		int max_ele = *max_element(cnt, cnt + 300);
+		if (s.size() - max_ele >= max_ele - 1) cout << "1" << endl;
+		else cout << "-1" << endl;
+	} 
 }
-/*
 
-*/

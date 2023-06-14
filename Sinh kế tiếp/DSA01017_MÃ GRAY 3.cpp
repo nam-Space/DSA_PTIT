@@ -1,27 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        string s; cin >> s;
-        vector<int> v;
-        for(char x : s)v.pb(x - '0');
-        vector<int> res(v.size(), 0);
-        res[0] = v[0];
-        for(int i = 1; i < v.size(); i++){
-            res[i] = v[i] ^ v[i - 1];
-        }
-        for(int x : res)cout << x;
-        cout << endl;
-    }
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		string s;
+		cin >> s;
+		int n = s.size();
+		int a[n + 1], b[n + 1];
+		for (int i = 1; i <= n; i++) {
+			a[i] = s[i - 1] - '0';
+			b[i] = s[i - 1] - '0';
+		}
+		for (int i = 2; i <= n; i++) {
+			b[i] = (a[i - 1] + a[i]) % 2;
+		}
+		for (int i = 1; i <= n; i++) {
+			cout << b[i];
+		}
+		cout << endl;
+	}
+	return 0;
 }
-/*
-
-*/

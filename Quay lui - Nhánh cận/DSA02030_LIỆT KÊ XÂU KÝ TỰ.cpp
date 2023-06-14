@@ -1,30 +1,49 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int k;
-char X[100], c;
+char a[101];
+int x[101];
+char c;
+int n, m, k, used[101];
+vector<string> res;
 
-void Try(int i, char st){
-    for(char j = st; j <= c; j++){
-        X[i] = j;
-        if(i == k){
-            for(int l = 1; l <= i; l++)cout << X[l];
-            cout << endl;
-        }else
-            Try(i + 1, j);
-    }
+void nhap() {
+	cin >> c >> k;
+	n = c - 64;
+	for (int i = 1; i <= n; i++) {
+		a[i] = i + 64;
+	}
+	x[0] = 1;
+	for (int i = 1; i <= n; i++) {
+		x[i] = i;
+	}
+} 
+
+void in() {
+	for (int i = 1; i <= k; i++) {
+		cout << a[x[i]];
+	}
+	cout << endl;
 }
+
+void Try(int i) {
+	for (int j = x[i - 1]; j <= n; j++) {
+		x[i] = j;
+		if (i == k) in();
+		else Try(i + 1);
+	}
+}
+
 
 int main(){
-    quick();
-    cin >> c >> k;
-    Try(1, 'A');
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	} 
 }
-/*
 
-*/

@@ -1,54 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-using P = pair<int, int>;
-int mod = 1e9 + 7;
-int test;
-int n, m, s, t, visited[1001], parent[1001], cnt, u;
+const int mod = 1e9 + 7;
+
+struct edge {
+	int dau, cuoi;
+};
+
+int n, m, goc;
+bool visited[1001];
 vector<int> adj[1001];
-vector<P> mst;
+vector<edge> canh;
 
-void bfs(int u){
-    queue<int> q;
-    q.push(u);
-    visited[u] = 1;
-    while(!q.empty()){
-        int top = q.front(); q.pop();
-        for(int x : adj[top]){
-            if(!visited[x]){
-                q.push(x);
-                mst.pb({top, x});
-                visited[x] = 1;
-            }
-        }
-    }
+void nhap() {
+	canh.clear();
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1001; i++) adj[i].clear();
+	cin >> n >> m >> goc;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
 }
 
-int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 1; i <= 1000; i++)adj[i].clear();
-        memset(visited, 0, sizeof(visited));
-        mst.clear();
-        cin >> n >> m >> u;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-        }
-        bfs(u);
-        if(mst.size() != n - 1){
-            cout << -1 << endl;
-        }else{
-            for(auto x : mst){
-                cout << x.first << ' ' << x.second << endl;
-            }
-        }
-    }
+void bfs(int u) {
+	queue<int> q;
+	q.push(u);
+	visited[u] = true;
+	while(!q.empty()) {
+		int v = q.front(); q.pop();
+		for (int x : adj[v]) {
+			if (!visited[x]) {
+				canh.push_back({v, x});
+				q.push(x);
+				visited[x] = true;
+			}
+		}
+	}
 }
-/*
-*/
+
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		bfs(goc);
+		if (canh.size() < n - 1) cout << "-1" << endl;
+		else {
+			for (edge x : canh) cout << x.dau << " " << x.cuoi << endl;
+		}
+	}
+	return 0;
+}

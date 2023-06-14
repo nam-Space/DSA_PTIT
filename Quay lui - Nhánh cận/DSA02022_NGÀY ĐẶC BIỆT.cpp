@@ -1,15 +1,48 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+int a[101], x[101];
+int n, m, k, used[10001];
+string s;
+int cnt;
+
+void nhap() {
+	cnt = 0;
+	n = 8;
+	memset(a, 0, sizeof(a));
+}
+
+bool check() {
+	if (a[1] == 0 && a[2] == 0) return false;
+	if (a[3] == 0 && a[4] == 0) return false;
+	if (a[3] == 2) return false;
+	if (a[5] == 0) return false;
+	return true;
+}
+
+void in() {
+	cout << a[1] << a[2] << "/" << a[3] << a[4] << "/" << a[5] << a[6] << a[7] << a[8] << endl;
+}
+
+void Try(int i) {
+	for (int j = 0; j <= 2; j += 2) {
+		a[i] = j;
+		if (i == n) {
+			if (check()) in();
+		}
+		else Try(i + 1);
+	}
+}
 
 int main(){
-    quick();
-    cout << "02/02/2000\n02/02/2002\n02/02/2020\n02/02/2022\n02/02/2200\n02/02/2202\n02/02/2220\n02/02/2222\n20/02/2000\n20/02/2002\n20/02/2020\n20/02/2022\n20/02/2200\n20/02/2202\n20/02/2220\n20/02/2222\n22/02/2000\n22/02/2002\n22/02/2020\n22/02/2022\n22/02/2200\n22/02/2202\n22/02/2220\n22/02/2222";
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
 }
-/*
 
-*/

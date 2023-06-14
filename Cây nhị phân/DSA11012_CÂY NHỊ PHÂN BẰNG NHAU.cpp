@@ -1,94 +1,69 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 struct Node{
-    int val;
-    Node *left, *right;
+	int data;
+	Node *left;
+	Node *right;
+	Node(int x) {
+		data = x;
+		left = right = NULL;
+	}
 };
 
-typedef Node* Tree;
-
-Tree createNode(int val){
-    Tree res = new Node;
-    res -> val = val;
-    res -> left = res -> right = NULL;
-    return res;
+void insert(Node *root, int n1, int n2, char c) {
+	if (root == NULL) return;
+	if (root->data == n1) {
+		if (c == 'L') root->left = new Node(n2);
+		else root->right = new Node(n2);
+	}
+	else {
+		insert(root->left, n1, n2, c);
+		insert(root->right, n1, n2, c);
+	}
 }
 
-void buildTree(Tree &root, int par, char c, int child){
-    if(root == NULL)
-        return;
-    if(par == root -> val){
-        if(c == 'L')
-            root -> left = createNode(child);
-        else
-            root -> right = createNode(child);
-    }
-    buildTree(root -> left, par, c, child);
-    buildTree(root -> right, par, c, child);
+bool bfs(Node *root) {
+	queue<Node*> q;
+	q.push(root);
+	int k = 0;
+	while(!q.empty()) {
+		int size = q.size();
+		if (k != 0 && size % 2 == 1) return false;
+		k++;
+		for (int i = 0; i < size; i++) {
+			Node *tmp = q.front();
+			q.pop();
+			if (tmp->left != NULL) {
+				q.push(tmp->left);
+			}
+			if (tmp->right != NULL) {
+				q.push(tmp->right);
+			}
+		}
+	}
+	return true;
 }
 
-bool check;
-
-void order(Tree root1, Tree root2){
-    if(!check || root1 == NULL || root2 == NULL)
-        return;
-    if(root1 -> val != root2 -> val){
-        check = 0;
-        return;
-    }
-    if((root1 -> left == NULL && root2 -> left != NULL) || (root1 -> right == NULL && root2 -> right != NULL)){
-        check = 0;
-        return;
-    }
-    order(root1 -> left, root2 -> left);
-    order(root1 -> right, root2 -> right);
+int main() {
+	int t;
+	cin >> t;
+	cin.ignore();
+	while(t--) {
+		int n;
+		cin >> n;
+		cin.ignore();
+		string s1, s2;
+		getline(cin, s1);
+		int m;
+		cin >> m;
+		cin.ignore();
+		getline(cin, s2);
+		if (s1 != s2) cout << "0" << endl;
+		else cout << "1" << endl; 
+	}
 }
 
-int main(){
-    quick();
-    int test, n, par, child, ori;
-    char c;
-    string s;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        ori = n;
-        Tree root1, root2;
-        cin >> par >> child >> c;
-        root1 = createNode(par);
-        buildTree(root1, par, c, child);
-        --n;
-        while(n--){
-            cin >> par >> child >> c;
-            buildTree(root1, par, c, child);
-        }
-        check = 1;
-        cin >> n;
-        if(n != ori){
-            cin.ignore();
-            getline(cin, s);
-            cout << 0 << endl;
-            continue;
-        }
-        cin >> par >> child >> c;
-        root2 = createNode(par);
-        buildTree(root2, par, c, child);
-        --n;
-        while(n--){
-            cin >> par >> child >> c;
-            buildTree(root2, par, c, child);
-        }
-        order(root1, root2);
-        cout << check << endl;
-    }
-}
-
-/*
-
-*/

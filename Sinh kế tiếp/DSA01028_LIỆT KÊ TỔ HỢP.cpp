@@ -1,48 +1,50 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
-int n, k, X[10001], ok;
-vector<int> a;
+const int mod = 1e9 + 7;
 
-void next(){
-	int i = k;
-	while(i > 0 && X[i] == n - k + i)i--;
-	if(!i)ok = 0;
-	else{
-		X[i]++;
-		for(int j = i + 1; j <= k; j++)
-			X[j] = X[j - 1] + 1;
+int a[10001], x[10001];
+int n, k, used[10001];
+set<int> se;
+
+void nhap() {
+	se.clear();
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+		se.insert(a[i]);
+	}
+	n = se.size();
+	int cnt = 1;
+	for (int x : se) {
+		a[cnt++] = x;
+	}
+	for (int i = 1; i <= n; i++) {
+		x[i] = i;
 	}
 }
 
-void out(){
-	for(int i = 1; i <= k; i++){
-		cout << a[X[i]] << ' ';
+void in() {
+	for (int i = 1; i <= k; i++) {
+		cout << a[x[i]] << " ";
 	}
 	cout << endl;
 }
 
-int main(){
-	quick();
-	cin >> n >> k;	
-	set<int> se;
-	for(int i = 1; i <= n; i++){
-		int x; cin >> x;
-		se.insert(x);
-		X[i] = i;
-	}; 
-	n = se.size();
-	a.push_back(-1);
-	for(int i : se)a.push_back(i);
-	ok = 1;
-	while(ok){
-		out();
-		next();
+void Try(int i) {
+	for (int j = x[i - 1] + 1; j <= n - k + i; j++) {
+		x[i] = j;
+		if (i == k) in();
+		else Try(i + 1);
 	}
 }
-/*
 
-*/
+int main(){
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
+}

@@ -1,53 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int test, n, m, root[1001];
-vector<pair<int, int>> vp;
+struct edge{
+	int dau, cuoi;
+};
 
-void init(){
-    vp.clear();
-    for(int i = 1; i <= n; i++)root[i] = i;
+int n, m;
+int parent[1001], sz[1001];
+bool visited[1001];
+vector<edge> canh;
+
+void nhap() {
+	memset(parent, 0, sizeof(parent));
+	memset(visited, false, sizeof(visited));
+	canh.clear();
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		canh.push_back({x, y});
+	}
 }
 
-int find(int u){
-    if(u == root[u])
-        return u;
-    root[u] = find(root[u]);
-    return root[u];
+void make_set() {
+	for (int i = 1; i <= n; i++) {
+		parent[i] = i;
+		sz[i] = 1;
+	}
 }
 
-int Union(vector<pair<int, int>> &vp){
-    int rootU, rootV;
-    for(auto &x : vp){
-        rootU = find(x.first);
-        rootV = find(x.second);
-        if(rootU == rootV) return 1;
-        root[rootU] = rootV;
-    }
-    return 0;
+int find(int u) {
+	if (u == parent[u]) return u;
+	return parent[u] = find(parent[u]);
+} 
+
+bool Union(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return false;
+	if (sz[a] < sz[b]) swap(a, b);
+	parent[b] = a;
+	sz[a] += sz[b];
+	return true;
 }
 
-int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        cin >> n >> m;
-        init();
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            vp.pb({x, y});
-        }
-        if(Union(vp))
-            cout << "YES" << endl;
-        else
-            cout << "NO" << endl;
-    }
+bool chu_trinh() {
+	for (edge x : canh) {
+		int a = x.dau;
+		int b = x.cuoi;
+		if (!Union(a, b)) return true;
+	}
+	return false;
 }
-/*
 
-*/
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		make_set();
+		if (chu_trinh()) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	}
+	return 0;
+}

@@ -1,47 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-using ll = long long;
-int mod = 1e9 + 7;
-int W, c[100], a[100], ok, n;
-int X[100];
+int n, w, fopt = INT_MIN;
+int a[101], c[101], x[101], xopt[101];
+bool chuaxet[101];
 
-void next(){
-	int i = n;
-	while(i > 0 && X[i] == 1){
-		X[i] = 0;
-		i--;
+void nhap() {
+	memset(chuaxet, true, sizeof(chuaxet));
+	memset(xopt, 0, sizeof(xopt));
+	cin >> n >> w;
+	for (int i = 1; i <= n; i++) {
+		cin >> c[i];
 	}
-	if(!i)ok = 0;
-	else X[i] = 1;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+	}	
+}
+void Try(int i, int sum_val, int sum_weight) {
+	if (sum_weight > w) {
+		return;
+	}
+	if (fopt < sum_val) {
+		fopt = sum_val;
+		memset(xopt, 0, sizeof(xopt));
+		for (int j = 1; j <= n; j++) {
+			if (x[j] > 0) xopt[x[j]] = 1;
+		}
+	}
+	for (int j = 1; j <= n; j++) {
+		if (chuaxet[j]) {
+			x[i] = j;
+			chuaxet[x[i]] = false;
+			sum_val += c[x[i]];
+			sum_weight += a[x[i]];
+			if (i == n) {
+				break;
+			}
+			else Try(i + 1, sum_val, sum_weight);
+			chuaxet[x[i]] = true;
+			sum_val -= c[x[i]];
+			sum_weight -= a[x[i]];
+		}
+	}
 }
 
-int main(){
-	quick();
-	cin >> n >> W;
-	for(int i = 1; i <= n; i++)cin >> c[i];
-	for(int i = 1; i <= n; i++)cin >> a[i];
-	for(int i = 1; i <= n; i++)X[i] = 0;
-	ok = 1;
-	int max = -1;
-	vector<int> v;
-	while(ok){
-		int sum = 0, temp = 0;
-		for(int i = 1; i <= n; i++){
-			sum += c[i] * X[i];
-			temp += a[i] * X[i];
+int main() {
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1, 0, 0);
+		cout << fopt << endl;
+		for (int i = 1; i <= n; i++) {
+			cout << xopt[i] << " ";
 		}
-		if(sum > max && temp <= W){
-			v.clear();
-			max = sum;
-			for(int i = 1; i <= n; i++)v.push_back(X[i]);
-		}
-		next();
+		cout << endl;
 	}
-	cout << max << endl;
-	for(int x : v)cout << x << ' ';
+    return 0;
 }
-/*
 
-*/

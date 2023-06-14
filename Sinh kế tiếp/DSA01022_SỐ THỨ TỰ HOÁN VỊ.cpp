@@ -1,24 +1,70 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+int a[1001], x[1001];
+int n, k, ok;
+map<vector<int>, int> mp;
+
+void nhap() {
+	mp.clear();
+	ok = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> x[i];
+	}
+	for (int i = 1; i <= n; i++) {
+		a[i] = i;
+	}
+}
+
+void sinh() {
+	int i = n - 1;
+	while(a[i] > a[i + 1] && i >= 1) {
+		i--;
+	}
+	if (i == 0) {
+		ok = 1;
+	}
+	else {
+		int j = n;
+		while(a[i] > a[j]) {
+			j--;
+		}
+		swap(a[i], a[j]);
+		reverse(a + i + 1, a + n + 1);
+	}
+}
+
+bool check(vector<int> v) {
+	for (int i = 0; i < v.size(); i++) {
+		if (v[i] != x[i + 1]) return false;
+	}
+	return true;
+}
 
 int main(){
-	int test; cin >> test;
-	while(test--){
-		int n; cin >> n;
-        int X[100];
-        for(int i = 0; i < n; i++)cin >> X[i];
-        int cnt = 1;
-		while(prev_permutation(X, X + n)){
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		int cnt = 0;
+		while(!ok) {
 			cnt++;
+			vector<int> v;
+			for (int i = 1; i <= n; i++) {
+				v.push_back(a[i]);
+			}
+			mp.insert({v, cnt});
+			sinh();
 		}
-        cout << cnt << endl;
+		for (auto it : mp) {
+			if (check(it.first)) {
+				cout << it.second << endl;
+				break;
+			}
+		}
 	}
-    
 }
-/*
-
-*/

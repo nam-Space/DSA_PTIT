@@ -1,62 +1,67 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int test;
-int n, m, s, t, visited[1001], parent[1001], cnt;
-vector<int> adj[1001];
+const int mod = 1e9 + 7;
 
-void dfs(int u){
-    visited[u] = 1;
-    for(int x : adj[u]){
-        if(!visited[x]){
-            dfs(x);
-        }
-    }
+int n, m;
+vector<int> adj[1001];
+bool visited[1001];
+
+void nhap() {
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1001; i++) {
+		adj[i].clear();
+	}
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
 }
 
-int TPLT(){
-    int res = 0;
-    for(int i = 1; i <= n; i++){
-        if(!visited[i]){
-            dfs(i);
-            res++;
-        }
-    }
-    return res;
+void dfs(int u) {
+	visited[u] = true;
+	for (int x : adj[u]) {
+		if (!visited[x]) {
+			dfs(x);
+		}
+	}
+}
+
+void dinh_tru() {
+	int cntRoot = 0;
+	for (int i = 1; i <= n; i++) {
+		if (!visited[i]) {
+			cntRoot++;
+			dfs(i);
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		memset(visited, false, sizeof(visited));
+		visited[i] = true;
+		int cnt = 0;
+		for (int j = 1; j <= n; j++) {
+			if (!visited[j]) {
+				cnt++;
+				dfs(j);
+			}
+		}
+		if (cnt > cntRoot) cout << i << " ";
+	}
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 1; i <= 1000; i++)adj[i].clear();
-        memset(visited, 0, sizeof(visited));
-        cin >> n >> m;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-        }
-        int ans = TPLT();
-        for(int i = 1; i <= n; i++){
-            memset(visited, 0, sizeof(visited));
-            int temp = 0;
-            visited[i] = 1;
-            for(int j = 1; j <= n; j++){
-                if(!visited[j]){
-                    temp++;
-                    dfs(j);
-                }
-            }
-            if(temp > ans)cout << i << ' ';
-        }
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		dinh_tru();
+		cout << endl;
+	}
+	return 0;
 }
-/*
 
-*/
+
+

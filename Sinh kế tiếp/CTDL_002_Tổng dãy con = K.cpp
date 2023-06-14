@@ -1,61 +1,51 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int X[100], ok, n, k, a[100], cnt = 0;
-void init(){
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++){
-        cin >> a[i];
-        X[i] = 0;
-    }
+int n, k, ok, a[101], x[101], cnt;
+
+void ktao() {
+	cnt = ok = 0;
+	memset(x, 0, sizeof(x));
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+	}
 }
 
-void next(){
-    int i = n;
-    while(i > 0 && X[i] == 1){
-        X[i] = 0;
-        i--;
-    }
-    if(!i)ok = 0;
-    else{
-        X[i] = 1;
-    }
+void sinh() {
+	int i = n;
+	while(x[i] == 1 && i >= 1) {
+		x[i] = 0;
+		i--;
+	}
+	if (i == 0) ok = 1;
+	else {
+		x[i] = 1;
+	}
 }
 
-void out(){
-    for(int i = 1; i <= n; i++)
-        if(X[i])
-            cout << a[i] << ' ';
-    cout << endl;
-}
-
-bool check(){
-    int sum = 0;
-    for(int i = 1; i <= n; i++)
-        if(X[i])
-            sum += a[i];
-    return sum == k;
+bool check() {
+	int sum = 0;
+	for (int i = 1; i <= n; i++) {
+		if (x[i] == 1) sum += a[i];
+	}
+	return sum == k;
 }
 
 int main(){
-    quick();
-    init();
-    ok = 1;
-    while(ok){
-        if(check()){
-            out();
-            cnt++;
-        }
-        next();
-    }
-    cout << cnt;
+	ktao();
+	while(!ok) {
+		if (check()) {
+			cnt++;
+			for (int i = 1; i <= n; i++) {
+				if (x[i] == 1) cout << a[i] << " ";
+			}
+			cout << endl;
+		}
+		sinh();
+	}
+	cout << cnt << endl;
 }
-
-/*
-
-*/

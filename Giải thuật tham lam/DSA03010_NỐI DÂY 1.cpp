@@ -1,32 +1,31 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+	return a.second < b.second;
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n ;
-        int a[n];
-        priority_queue<ll, vector<ll>, greater<ll>> q;
-        for(int &x : a){
-            cin >> x;
-            q.push(x);
-        }
-        ll res = 0;
-        while(q.size() > 1){
-            ll t1 = q.top(); q.pop();
-            ll t2 = q.top(); q.pop();
-            res += t1 + t2;
-            q.push(t1 + t2);
-        }
-        cout << res << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		priority_queue<ll, vector<ll>, greater<ll>> pq;
+		for (int i = 0; i < n; i++) {
+			int x; cin >> x;
+			pq.push(x);
+		}
+		ll res = 0;
+		while(pq.size() >= 2) {
+			int x = pq.top(); pq.pop();
+			int y = pq.top(); pq.pop();
+			res += x + y;
+			pq.push(x + y);
+		}
+		cout << res << endl;
+	} 
 }
-/*
 
-*/

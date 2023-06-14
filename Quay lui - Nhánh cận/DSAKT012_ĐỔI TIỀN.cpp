@@ -1,41 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int n, s, a[100], check, res;
+const int mod = 1e9 + 7;
 
-void Try(int i, int pos, int sum){
-    if(check)return;
-    for(int j = pos; j >= 0; j--){
-        if(check)return;
-        sum += a[j];
-        i++;
-        if(sum == s && !check){
-            check = 1;
-            res = min(res, i);
-            return;
-        }else if(sum < s)
-            Try(i, j - 1, sum);
-        sum -= a[j];
-        i--;
-    }
+int n, s, k, a[101], x[101];
+
+void nhap() {
+	cin >> n >> s;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+	}
 }
 
-int main(){
-    quick();
-    cin >> n >> s;
-    check = 0, res = INT_MAX;
-    for(int i = 0; i < n; i++)cin >> a[i];
-    sort(a, a + n);
-    Try(0, n - 1, 0);
-    if(res != INT_MAX)
-        cout << res;
-    else 
-        cout << -1;
+bool check() {
+	int sum = 0;
+	for (int i = 1; i <= k; i++) {
+		sum += a[x[i]];
+	}
+	return sum == s;
 }
-/*
 
-*/
+bool Try(int i) {
+	for (int j = x[i - 1] + 1; j <= n - k + i; j++) {
+		x[i] = j;
+		if (i == k) {
+			if (check()) return true;
+		}
+		else if (Try(i + 1)) return true;
+	}
+	return false;
+}
+
+int solve() {
+	for (int i = 1; i <= n; i++) {
+		k = i;
+		for (int j = 1; j <= k; j++) {
+			x[j] = j;
+		}
+		if (Try(1)) return i;
+	}
+	return -1;
+}
+
+int main() {
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		cout << solve() << endl;
+	}
+	return 0;
+}

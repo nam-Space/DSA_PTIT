@@ -1,27 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+ll ugly[10001];
+
+void init() {
+	ugly[1] = 1;
+	int i2 = 1, i3 = 1, i5 = 1;
+	for (int i = 2; i <= 10000; i++) {
+		ugly[i] = min(ugly[i2] * 2, min(ugly[i3] * 3, ugly[i5] * 5));
+		if (ugly[i] % 2 == 0) i2++;
+		if (ugly[i] % 3 == 0) i3++;
+		if (ugly[i] % 5 == 0) i5++;
+	}
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        int dp[10000] = {0}, a = 0, b = 0, c = 0;
-        dp[0] = 1;
-        for(int i = 1; i < n; i++){
-            dp[i] = min({dp[a] * 2, dp[b] * 3, dp[c] * 5});
-            if(dp[i] == dp[a] * 2)a++;
-            if(dp[i] == dp[b] * 3)b++;
-            if(dp[i] == dp[c] * 5)c++;
-        }
-        cout << dp[n - 1] << endl;
-    }
+	init();
+    int t;
+    cin >> t;
+    while(t--) {
+    	int n;
+    	cin >> n;
+    	cout << ugly[n] << endl;
+	}
 }
-/*
 
-*/
+

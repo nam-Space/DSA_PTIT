@@ -1,52 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int test;
-int n, m, s, t, visited[1001], parent[1001], cnt;
-vector<int> adj[1001];
+const int mod = 1e9 + 7;
 
-int dfs(int u, int par){
-    visited[u] = 1;
-    for(int x : adj[u]){
-        if(!visited[x]){
-            if(dfs(x, u))return 1;
-        }
-        else if(x != par)return 1;
-    }
-    return 0;
+int n, m;
+vector<int> adj[1001];
+bool visited[1001];
+int parent[1001];
+
+void nhap() {
+	memset(visited, false, sizeof(visited));
+	memset(parent, 0, sizeof(parent));
+	for (int i = 0; i < 1001; i++) adj[i].clear();
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
 }
 
+bool bfs(int u) {
+	queue<int> q;
+	q.push(u);
+	visited[u] = true;
+	while(!q.empty()) {
+		int v = q.front(); q.pop();
+		for (int x : adj[v]) {
+			if (!visited[x]) {
+				q.push(x);
+				visited[x] = true;
+				parent[x] = v;
+			}
+			else if (x != parent[v]) return true;
+		}
+	}
+	return false;
+}
+
+bool chu_trinh() {
+	for (int i = 1; i <= n; i++) {
+		if (!visited[i]) {
+			if (bfs(i)) return true;
+		}
+	}
+	return false;
+}
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 1; i <= 1000; i++)adj[i].clear();
-        memset(visited, 0, sizeof(visited));
-        cin >> n >> m;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-        }
-        cnt = 0;
-        for(int i = 1; i <= n; i++){
-            if(!visited[i]){
-                if(dfs(i, 0)){
-                    cout << "YES\n";
-                    cnt = 1;
-                    break;
-                }
-            }
-        }
-        if(!cnt)
-            cout << "NO\n";
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		if (chu_trinh()) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	} 
 }
-/*
 
-*/
+

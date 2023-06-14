@@ -1,38 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n, m; cin >> n >> m;
-        set<int> Union;
-        map<int,int> Intersection;
-        for(int i = 0; i < n; i++){
-            int x; cin >> x;
-            Union.insert(x);
-            Intersection[x] = 1;
-        }
-        for(int i = 0; i < m; i++){
-            int x; cin >> x;
-            Union.insert(x);
-            if(Intersection[x] == 1)
-                Intersection[x] = 2; 
-        }
-        for(int x : Union)cout << x << ' ';
-        cout << endl;
-        for(auto x : Intersection){
-            if(x.second == 2)
-                cout << x.first << ' ';
-        }
-        cout << endl;
-    }
+    int t;
+    cin >> t;
+    while(t--) {
+    	int n, m;
+    	cin >> n >> m;
+    	set<int> se1, se2, se3;
+    	for (int i = 0; i < n; i++) {
+    		int x; cin >> x;
+    		se1.insert(x);
+    		se3.insert(x);
+		}
+		for (int i = 0; i < m; i++) {
+			int x; cin >> x;
+			se2.insert(x);
+			se3.insert(x);
+		}
+		for (int x : se3) {
+			cout << x << " ";
+		}
+		cout << endl;
+		for (int x : se2) {
+			if (se1.find(x) != se1.end()) {
+				cout << x << " ";
+			}
+		}
+		cout << endl;
+	}
 }
-/*
-
-*/

@@ -1,69 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 struct Node{
-    int val;
-    Node *left, *right;
+	int data;
+	Node *left;
+	Node *right;
+	Node(int x) {
+		data = x;
+		left = right = NULL;
+	}
 };
 
-typedef Node* Tree;
-
-Tree createNode(int val){
-    Tree res = new Node;
-    res -> val = val;
-    res -> left = res -> right = NULL;
-    return res;
+void insert(Node *root, int x) {
+	if (root->data > x) {
+		if (root->left == NULL) root->left = new Node(x);
+		else insert(root->left, x);
+	}
+	else {
+		if (root->right == NULL) root->right = new Node(x);
+		else insert(root->right, x);
+	}
 }
 
-void buildTree(Tree &x, int val){
-    if(x == NULL)
-        x = createNode(val);
-    else{
-        if(x -> val > val)
-            buildTree(x -> left, val);
-        else
-            buildTree(x -> right, val);
-    }
+void preOrder(Node *root) {
+	if (root == NULL) return;
+	if (root->left == NULL && root->right == NULL) cout << root->data << " ";
+	preOrder(root->left);
+	preOrder(root->right);
 }
 
-set<int> leaf;
-
-void order(Tree x){
-    if(x){
-        if(x -> left == NULL && x -> right == NULL)
-            leaf.insert(x -> val);
-        else{
-            if(x -> left)
-                order(x -> left);
-            if(x -> right)
-                order(x -> right);
-        }
-    }
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		Node *root = NULL;
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			int x; cin >> x;
+			if (root == NULL) root = new Node(x);
+			else insert(root, x);
+		}
+		preOrder(root);
+		cout << endl;
+	} 
 }
 
-int main(){
-    quick();
-    int test, n, x;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        Tree T = NULL;
-        while(n--){
-            cin >> x;
-            buildTree(T, x);
-        }
-        order(T);
-        for(int i : leaf)
-            cout << i << ' ';
-        cout << endl;
-        leaf.clear();
-    }
-}
-/*
-
-*/

@@ -1,54 +1,43 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int n, k, X[100], ok;
-vector<char> v;
+char a[1001];
+int x[1001];
+int n, k;
 
-void init(){
-    v.clear();
-    ok = 1;
-    cin >> n >> k;
-    v.pb('@');
-    for(int i = 1; i <= n; i++){
-        v.pb(i + 64);
-        X[i] = i;
-    }
+void nhap() {
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		a[i] = i + 64;
+	} 
+	for (int i = 1; i <= n; i++) {
+		x[i] = i;
+	} 
 }
 
-void next(){
-    int i = k;
-    while(i > 0 && X[i] == n - k + i)i--;
-    if(!i)ok = 0;
-    else{
-        X[i]++;
-        for(int j = i + 1; j <= k; j++)
-            X[j] = X[j - 1] + 1;
-    }
+void in() {
+	for (int i = 1; i <= k; i++) {
+		cout << a[x[i]];
+	}
+	cout << endl;
 }
 
-void out(){
-    for(int i = 1; i <= k; i++)
-        cout << v[X[i]];
-    cout << endl;
+void Try(int i) {
+	for (int j = x[i - 1] + 1; j <= n - k + i; j++) {
+		x[i] = j;
+		if (i == k) in();
+		else Try(i + 1);
+	}
 }
-
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        init();
-        while(ok){
-            out();
-            next();
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
 }
-/*
-
-*/

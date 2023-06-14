@@ -1,46 +1,33 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-
-void solve(string x, string y, int k)
-{
-    int rem = 0;
-    while(y.length() < x.length()) y = '0' + y;
-    while(x.length() < y.length()) x = '0' + x;
-    int n = x.length(), m = y.length();
-    vector<int> v;
-    string res = "";
-    for(int i = n - 1; i >= 0; i--)
-    {
-        int temp = x[i] + y[i] -'0' -'0'+ rem;
-        if(temp >= k)
-        {
-            rem = temp / k;
-            res = char(temp % k + '0') + res;
-        }else{
-            rem = temp / k;
-            res = char(temp + '0') + res;
-        }
-    }
-    if(rem > 0)res = "1" + res;
-    cout << res << endl;
-}
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test;
-    cin >> test;
-    while(test--)
-    {
-        string x,y; int k;
-        cin >> k >> x >> y;
-        solve(x , y, k);
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int k;
+		cin >> k;
+		string s1, s2;
+		cin >> s1 >> s2;
+		while(s1.size() < s2.size()) s1 = "0" + s1;
+		while(s2.size() < s1.size()) s2 = "0" + s2;
+		reverse(s1.begin(), s1.end());
+		reverse(s2.begin(), s2.end());
+		int nho = 0;
+		string s3 = "";
+		for (int i = 0; i < s1.size(); i++) {
+			int tong = (s1[i] - '0') + (s2[i] - '0') + nho;
+			nho = tong / k;
+			tong = tong % k;
+			s3 += to_string(tong);
+		}
+		if (nho) s3 += to_string(nho);
+		reverse(s3.begin(), s3.end());
+		cout << s3 << endl;
+	}
+	return 0;
 }
-/*
-1
-12
-198111
-*/
+

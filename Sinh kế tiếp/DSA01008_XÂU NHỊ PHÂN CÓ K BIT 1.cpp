@@ -1,53 +1,47 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int n, k, X[100], ok;
+int a[1001];
+int n, k;
 
-void in(){
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++)X[i] = 0;
-    ok = 1;
+void nhap() {
+	cin >> n >> k;
+	memset(a, 0, sizeof(a));
 }
 
-void next(){
-    int i = n;
-    while(i > 0 && X[i] == 1){
-        X[i] = 0;
-        i--;
-    }
-    if(!i) ok = 0;
-    else X[i] = 1;
+void in() {
+	for (int i = 1; i <= n; i++) {
+		cout << a[i];
+	}
+	cout << endl;
 }
 
-int check(){
-    int sum = 0;
-    for(int i = 1; i <= n; i++)sum += X[i];
-    return sum == k;
+bool check() {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (a[i] == 1) cnt++;
+	}
+	return cnt == k;
 }
 
-void out(){
-    if(check()){
-        for(int i = 1; i <= n; i++)cout << X[i];
-        cout << endl;
-    }
+void Try(int i) {
+	for (int j = 0; j <= 1; j++) {
+		a[i] = j;
+		if (i == n) {
+			if (check()) in();
+		}
+		else Try(i + 1);
+	}
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        in();
-        while(ok){
-            out();
-            next();
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		Try(1);
+	}
 }
-/*
-
-*/

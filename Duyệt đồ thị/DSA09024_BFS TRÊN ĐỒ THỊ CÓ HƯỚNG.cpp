@@ -1,47 +1,46 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h> 
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
-int n, m, test, u;
 vector<int> adj[1001];
-vector<pair<int, int>> edge;
-int visited[1001];
+bool visited[1001];
 
-void bfs(int u){
-    queue<int> q; q.push(u);
-    visited[u] = 1;
-    cout << u << ' ';
-    while(!q.empty()){
-        int top = q.front(); q.pop();
-        for(int x : adj[top]){
-            if(!visited[x]){
-                q.push(x);
-                cout << x << ' ';
-                visited[x] = 1;
-            }
-        }
-    }
+void bfs(int u) {
+	queue<int> st;
+	st.push(u);
+	visited[u] = true;
+	while(!st.empty()) {
+		int top = st.front();
+		st.pop();
+		cout << top << " ";
+		for (int x : adj[top]) {
+			if (!visited[x]) {
+				st.push(x);
+				visited[x] = true;
+			}
+		}
+	}
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 0; i <= 1000; i++)adj[i].clear();
-        cin >> n >> m >> u;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            //adj[y].pb(x);
-        }
-        memset(visited, 0, sizeof(visited));
-        bfs(u);
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		memset(visited, false, sizeof(visited));
+		int n, m, k;
+		cin >> n >> m >> k;
+		for (int i = 0; i < m; i++) {
+			int x, y;
+			cin >> x >> y;
+			adj[x].push_back(y);
+		}
+		bfs(k);
+		cout << endl;
+		for (int i = 1; i <= n; i++) {
+			adj[i].clear();
+		}
+	}
+	return 0;
 }
-/*
 
-*/
+
+

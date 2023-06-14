@@ -1,54 +1,66 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-using pii = pair <int, int>;
+const int mod = 1e9 + 7;
 
-int test, n, m, u;
-vector <pii> adj[1001];
-int d[1001];
+struct edge {
+	int dau, cuoi, w;
+};
 
-void dijkstra(int s, int t) {
-    for (int i = 1; i <= n; i++)
-        d[i] = 1e9;
-    d[s] = 0;
-    priority_queue <pii, vector <pii>, greater <pii>> q;
-    q.push({0, s});
-    while (!q.empty()) {
-        auto x = q.top();
-        q.pop();
-        if (x.first != d[x.second])
-            continue;
-        for (auto temp : adj[x.second]) {
-            if (d[x.second] + temp.first < d[temp.second]){
-                d[temp.second] = d[x.second] + temp.first;
-                q.push({d[temp.second], temp.second});
-            }
-        }
-    }
+int n, m, s;
+vector<pair<int, int>> adj[1001];
+int parent[1001], sz[1001];
+bool visited[1001];
+vector<edge> canh;
+
+void nhap() {
+	canh.clear();
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1001; i++) {
+		adj[i].clear();
+	}
+	cin >> n >> m >> s;
+	for (int i = 0; i < m; i++) {
+		int x, y, w; cin >> x >> y >> w;
+		canh.push_back({x, y, w});
+		adj[x].push_back({y, w});
+		adj[y].push_back({x, w});
+	}
+}
+
+void dijkstra(int s) {
+	vector<int> d(n + 1, INT_MAX);
+	d[s] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({0, s});
+	while(!pq.empty()) {
+		pair<int, int> top = pq.top(); pq.pop();
+		int u = top.second;
+		int kc = top.first;
+		if (kc > d[u]) continue;
+		for (auto it : adj[u]) {
+			int v = it.first;
+			int w = it.second;
+			if (d[v] > d[u] + w) {
+				d[v] = d[u] + w;
+				pq.push({d[v], v});
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++) cout << d[i] << " ";
+	cout << endl;
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 0; i <= 1000; i++)adj[i].clear();
-        cin >> n >> m >> u;
-        for(int i = 1; i <= m; i++){
-            int x, y, w; cin >> x >> y >> w;
-            adj[x].pb({w, y});
-            adj[y].pb({w, x});
-        }
-        for(int i = 1; i <= n; i++){
-            dijkstra(u, i);
-            cout << d[i] << ' ';
-        }
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		dijkstra(s);
+	}
+	return 0;
 }
-/*
 
-*/
+
+

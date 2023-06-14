@@ -1,32 +1,38 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+	return a.second < b.second;
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n ;
-        vector<pair<int,int>> vp(n);
-        for(int i = 0; i < n; i++)cin >> vp[i].first;
-        for(int i = 0; i < n; i++)cin >> vp[i].second;
-        sort(vp.begin(), vp.end(), [](pair<int,int> a, pair<int,int> b) -> bool{
-            return a.second < b.second;
-        });
-        int kt = vp[0].second, res = 1;
-        for(int i = 1; i < n; i++){
-            if(vp[i].first >= kt){
-                res++;
-                kt = vp[i].second;
-            }
-        }
-        cout << res << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		vector<pair<int, int>> action;
+		int a[n], b[n];
+		for (int &x : a) {
+			cin >> x;
+		}
+		for (int &x : b) {
+			cin >> x;
+		}
+		for (int i = 0; i < n; i++) {
+			action.push_back({a[i], b[i]});
+		}
+		sort(action.begin(), action.end(), cmp);
+		int cnt = 1, index = 0;
+		for (int i = 1; i < n; i++) {
+			if (action[index].second <= action[i].first) {
+				cnt++;
+				index = i;
+			}
+		}
+		cout << cnt << endl;
+	} 
 }
-/*
 
-*/

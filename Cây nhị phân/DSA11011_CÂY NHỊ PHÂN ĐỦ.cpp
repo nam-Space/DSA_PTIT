@@ -1,78 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 struct Node{
-    int val;
-    Node *left, *right;
+	int data;
+	Node *left;
+	Node *right;
+	Node(int x) {
+		data = x;
+		left = right = NULL;
+	}
 };
 
-typedef Node* Tree;
-
-Tree createNode(int val){
-    Tree res = new Node;
-    res -> val = val;
-    res -> left = res -> right = NULL;
-    return res;
+void insert(Node *root, int n1, int n2, char c) {
+	if (root == NULL) return;
+	if (root->data == n1) {
+		if (c == 'L') root->left = new Node(n2);
+		else root->right = new Node(n2);
+	}
+	else {
+		insert(root->left, n1, n2, c);
+		insert(root->right, n1, n2, c);
+	}
 }
 
-bool check;
-
-void order(Tree x){
-    if(!check)
-        return;
-    if(x){
-        if((x -> left == NULL && x -> right) || (x -> left && x -> right == NULL)){
-            check = 0;
-            return;
-        }
-        if(x -> left)
-            order(x -> left);
-        if(x -> right)
-            order(x -> right);
-    }
+bool bfs(Node *root) {
+	queue<Node*> q;
+	q.push(root);
+	int k = 0;
+	while(!q.empty()) {
+		int size = q.size();
+		if (k != 0 && size % 2 == 1) return false;
+		k++;
+		for (int i = 0; i < size; i++) {
+			Node *tmp = q.front();
+			q.pop();
+			if (tmp->left != NULL) {
+				q.push(tmp->left);
+			}
+			if (tmp->right != NULL) {
+				q.push(tmp->right);
+			}
+		}
+	}
+	return true;
 }
 
-int main(){
-    quick();
-    int test, n, par, child;
-    char c;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        unordered_map<int, Tree> m;
-        cin >> par >> child >> c;
-        Tree T = createNode(par);
-        m[par] = T;
-        if(c == 'L'){
-            m[par] -> left = createNode(child);
-            m[child] = m[par] -> left;
-        }
-        else{
-            m[par] -> right = createNode(child);
-            m[child] = m[par] -> right;
-        }
-        --n;
-        while(n--){
-            cin >> par >> child >> c;
-            if(c == 'L'){
-                m[par] -> left = createNode(child);
-                m[child] = m[par] -> left;
-            }
-            else{
-                m[par] -> right = createNode(child);
-                m[child] = m[par] -> right;
-            }
-        }
-        check = 1;
-        order(T);
-        cout << check << endl;
-    }
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		Node *root = NULL;
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			int n1, n2;
+			char c;
+			cin >> n1 >> n2 >> c;
+			if (root == NULL) {
+				root = new Node(n1);
+				if (c == 'L') root->left = new Node(n2);
+				else root->right = new Node(n2);
+			}
+			else insert(root, n1, n2, c);
+		}
+		if (bfs(root)) cout << "1" << endl;
+		else cout << "0" << endl;
+	}
 }
-/*
 
-*/

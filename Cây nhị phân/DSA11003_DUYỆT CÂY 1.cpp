@@ -1,38 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
+struct Node{
+	int data;
+	Node *left, *right;
+	Node(int x){
+		data = x;
+		left = right = NULL;
+	}
+};
 
-int pos = 0;
-
-void solve(int inorder[], int preorder[], int l, int r, unordered_map<int, int> &ump){
-    if(l <= r){
-        int idx = ump[preorder[pos++]];
-        solve(inorder, preorder, l, idx - 1, ump);
-        solve(inorder, preorder, idx + 1, r, ump);
-        cout << inorder[idx] << ' ';
-    }
+int search(int in[], int x, int n){
+	for(int i = 0; i < n; i++) if(in[i] == x) return i;
+	return -1;
 }
 
-int main(){
-    quick();
-    int test, n; cin >> t;
-    while(test--){
-        cin >> n;
-        int inorder[n], preorder[n];
-        for(int &x : inorder) cin >> x;
-        for(int &x : preorder) cin >> x;
-        unordered_map<int, int> ump;
-        for (int i = 0; i < n; ++i)
-            ump[inorder[i]] = i;
-        pos = 0;
-        solve(inorder, preorder, 0, n - 1, ump);
-        cout << endl;
-    }
+void postOrder(int in[], int pre[], int n){
+	int root = search(in, pre[0], n);
+	if(root != 0) postOrder(in, pre + 1, root);
+	if(root != n - 1) postOrder(in + root + 1, pre + root + 1, n - root - 1);
+	cout<<pre[0]<<" ";
 }
-/*
 
-*/
+int main() {
+	int t; cin>>t;
+	while(t--){
+		int n; cin>>n;
+		int in[n + 5] = {}, pre[n + 5] = {};
+		for(int i = 0; i < n; i++) cin>>in[i];
+		for(int i = 0; i < n; i++) cin>>pre[i];
+		postOrder(in, pre, n);
+		cout<<endl;
+	}
+
+}

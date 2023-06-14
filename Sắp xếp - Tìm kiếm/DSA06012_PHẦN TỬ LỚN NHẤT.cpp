@@ -1,25 +1,33 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+void buble_sort(int a[], int n) {
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
+			if (a[j] > a[j + 1]) {
+				swap(a[j], a[j + 1]);
+			}
+		}
+	}
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n, k; cin >> n >> k;
-        int a[n];
-        for(int &x : a)cin >> x;
-        sort(a, a + n, greater<int>());
-        for(int i = 0; i < k; i++){
-            cout << a[i] << ' ';
-        }
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n, k;
+		cin >> n >> k;
+		int a[n];
+		for (int &x : a) cin >> x;
+		buble_sort(a, n);
+		for (int i = n - 1; i >= n - k; i--) {
+			cout << a[i] << " ";
+		}
+		cout << endl;
+	}
+	return 0;
 }
-/*
 
-*/

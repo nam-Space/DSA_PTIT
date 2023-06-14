@@ -1,59 +1,56 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-struct Matrix{
-    ll M[11][11];
-    int n;
-    Matrix operator * (Matrix a){
-        Matrix b;
-        b.n = n;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                b.M[i][j] = 0;
-                for(int k = 0; k < n; k++){
-                    b.M[i][j] += M[i][k] * a.M[k][j];
-                    b.M[i][j] %= mod; 
-                }
-            }
-        }
-        return b;
-    }
-};
+int n, k;
+ll a[10][10], b[10][10];
 
-Matrix powMOD(Matrix a, ll n){
-    if(n == 1)return a;
-    Matrix temp = powMOD(a, n / 2);
-    if(n % 2)
-        return temp * temp * a;
-    else
-        return temp * temp;
+void Mul(ll a[10][10], ll b[10][10]) {
+	ll tmp[n][n];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			tmp[i][j] = 0;
+			for (int k = 0; k < n; k++) {
+				tmp[i][j] += a[i][k] * b[k][j];
+				tmp[i][j] %= mod;
+			}
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			a[i][j] = tmp[i][j];
+		}
+	}
+}
+
+void Pow(int k) {
+	if (k < 2) return;
+	Pow(k / 2);
+	Mul(a, a);
+	if (k % 2 == 1) Mul(a, b);
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n, k; cin >> n >> k;
-        Matrix a; a.n = n;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                cin >> a.M[i][j];
-            }
-        }
-        Matrix ans = powMOD(a, k);
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                cout << ans.M[i][j] << ' ';
-            }
-            cout << endl;
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		cin >> n >> k;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				cin >> a[i][j];
+				b[i][j] = a[i][j];
+			}
+		}
+		Pow(k);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				cout << a[i][j] << " ";
+			}
+			cout << endl;
+		}
+	}
+	return 0;
 }
-/*
 
-*/

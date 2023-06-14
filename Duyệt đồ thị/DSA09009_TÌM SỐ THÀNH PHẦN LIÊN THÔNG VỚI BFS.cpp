@@ -1,51 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
+const int inf = 1e9;
 using ll = long long;
-int mod = 1e9 + 7;
-int test;
-int n, m, s, t, visited[1001], parent[1001], cnt;
+
+int n, m, s, en;
 vector<int> adj[1001];
+bool visited[1001];
+int parent[1001];
 
-void bfs(int u){
-    queue<int> q; q.push(u);
-    visited[u] = 1;
-    while(!q.empty()){
-        int top = q.front(); q.pop();
-        for(int x : adj[top]){
-            if(!visited[x]){
-                q.push(top);
-                q.push(x);
-                visited[x] = 1;
-            }
-        }
-    }
+void nhap() {
+	memset(visited, false, sizeof(visited));
+	memset(parent, 0, sizeof(parent));
+	for (int i = 0; i < 1001; i++) adj[i].clear();
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
 }
 
-int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        for(int i = 1; i <= 1000; i++)adj[i].clear();
-        memset(visited, 0, sizeof(visited));
-        cin >> n >> m;
-        for(int i = 1; i <= m; i++){
-            int x, y; cin >> x >> y;
-            adj[x].pb(y);
-            adj[y].pb(x);
-        }
-        cnt = 0;
-        for(int i = 1; i <= n; i++){
-            if(!visited[i]){
-                ++cnt;
-                bfs(i);
-            }
-        }
-        cout << cnt << endl;
-    }
+void bfs(int u) {
+	queue<int> q;
+	q.push(u);
+	visited[u] = true;
+	while(!q.empty()) {
+		int v = q.front(); q.pop();
+		for (int x : adj[v]) {
+			if (!visited[x]) {
+				q.push(x);
+				visited[x] = true;
+			} 
+		}
+	}
 }
-/*
 
-*/
+int tplt() {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (!visited[i]) {
+			bfs(i);
+			cnt++;
+		}
+	}
+	return cnt;
+}
+
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		cout << tplt() << endl;
+	}
+}

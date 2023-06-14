@@ -1,29 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        queue<string> q;
-        vector<string> v;
-        q.push("1");        
-        while(n--){
-            string top = q.front(); q.pop();
-            v.pb(top);
-            q.push(top + "0");
-            q.push(top + "1");
-        }
-        for(string x : v)cout << x << ' ';
-        cout << endl;
-    }
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		for (int i = 1; i <= n; i++) {
+			stack<int> st;
+			int tmp = i;
+			while(tmp) {
+				st.push(tmp % 2);
+				tmp = tmp / 2;
+			}
+			while(!st.empty()) {
+				cout << st.top();
+				st.pop();
+			}
+			cout << " ";
+		}
+		cout << endl;
+	} 
 }
-/*
 
-*/

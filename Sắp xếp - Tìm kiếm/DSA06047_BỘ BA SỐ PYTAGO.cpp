@@ -1,43 +1,53 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int search(vector<ll> a, int l, int r, ll x){
-	if(l <= r){
-		int m = (l + r) / 2;
-		if(a[m] == x)return m;
-		else if(a[m] > x)return search(a, l, m - 1, x);
-		else return search(a, m + 1, r, x);
-	}else
-		return -1;
+void merge(int a[], int l, int m, int r) {
+	vector<int> x(a + l, a + m + 1);
+	vector<int> y(a + m + 1, a + r + 1);
+	int i = 0, j = 0;
+	while(i < x.size() && j < y.size()) {
+		if (x[i] < y[j]) a[l++] = x[i++];
+		else a[l++] = y[j++];
+	}
+	while(i < x.size()) a[l++] = x[i++];
+	while(j < y.size()) a[l++] = y[j++];
+}
+
+void merge_sort(int a[], int l, int r) {
+	if (l >= r) return;
+	int m = (l + r) / 2;
+	merge_sort(a, l, m);
+	merge_sort(a, m + 1, r);
+	merge(a, l, m, r);
+}
+
+bool check(ll a[], int n) {
+	for (int i = 0; i < n - 2; i++) {
+		for (int j = i + 1; j < n - 1; j++) {
+			if (binary_search(a + j + 1, a + n, a[i] + a[j])) return true;
+		}
+	}
+	return false;	
 }
 
 int main(){
-	int test; cin >> test;
-	while(test--){
-		int n; cin >> n;
-		vector<ll> a(n);
-		for(int i = 0; i < n; i++)cin >> a[i];
-		sort(a.begin(), a.end());
-		int kt = 0;
-		for(int i = 0; i < n - 1; i++){
-			for(int j = i + 1; j < n; j++){
-				ll x = a[i] * a[i] + a[j] * a[j];
-				ll tmp = sqrt(x);
-				if(tmp * tmp == x && search(a, j + 1, n - 1, tmp) != -1){
-					cout << "YES\n";
-					kt = 1;
-					break;
-				}
-			}
-			if(kt)break;
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		ll a[n];
+		for (int i = 0; i < n; i++) {
+			int x; cin >> x;
+			a[i] = 1ll * x * x;
 		}
-		if(!kt)cout << "NO\n";
+		sort(a, a + n);
+		if (check(a, n)) cout << "YES" << endl;
+		else cout << "NO" << endl;
 	}
+	return 0;
 }
-/*
 
-*/

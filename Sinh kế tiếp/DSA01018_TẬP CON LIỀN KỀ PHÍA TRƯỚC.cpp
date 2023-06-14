@@ -1,35 +1,47 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int test, n, k, X[1001];
+int a[1001];
+int n, k;
 
-void prev(){
-    int i = k;
-    while(i && X[i - 1] + 1 == X[i])i--;
-    if(i){
-        X[i]--;
-        for(int j = i + 1; j <= k; j++)X[j] = n - k + j;
-        for(int i = 1; i <= k; i++)cout << X[i] << ' ';
-    }
-    else
-        for(int j = 1; j <= k; j++)cout << j + k - 1 << ' ';
+void nhap() {
+	cin >> n >> k;
+	for (int i = 1; i <= k; i++) {
+		cin >> a[i];
+	}
+}
+
+void prev() {
+	int i = k;
+	while(i >= 1 && a[i - 1] + 1 == a[i]) {
+		i--;
+	}
+	if (i == 0) {
+		for (int j = 1; j <= k; j++) {
+			a[j] = j + k - 1;
+		}
+	}
+	else {
+		a[i]--;
+		for (int j = i + 1; j <= k; j++) {
+			a[j] = n - k + j;
+		}
+	}
 }
 
 int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        cin >> n >> k;
-        for(int i = 1; i <= k; i++)cin >> X[i];
-        prev();
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		prev();
+		for (int i = 1; i <= k; i++) {
+			cout << a[i] << " ";
+		}
+		cout << endl;
+	}
 }
-/*
 
-*/

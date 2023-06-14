@@ -1,29 +1,39 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+bool cmp(int a, int b) {
+	return a > b;
+}
 
 int main(){
-    quick();
-    int n; cin >> n;
-    vector<int> odd,even;
-    for(int i = 0; i < n; i++){
-        int x; cin >> x;
-        if(i % 2 == 0)odd.pb(x);
-        else even.pb(x);
-    }
-    sort(odd.begin(), odd.end());
-    sort(even.begin(), even.end(), greater<int> ());
-    int i = 0, j = 0;
-    while(i < odd.size() && j < even.size()){
-        cout << odd[i++] << ' ' << even[j++] << ' ';
-    }
-    while(i < odd.size())cout << odd[i++] << ' ';
-    while(j < even.size())cout << even[j++] << ' ';
+	int t;
+	t = 1;
+	while(t--) {
+		int n;
+		cin >> n;
+		vector<int> chan, le;
+		for (int i = 1; i <= n; i++) {
+			int x; cin >> x;
+			if (i % 2 == 0) chan.push_back(x);
+			else le.push_back(x);
+		}
+		sort(chan.begin(), chan.end(), cmp);
+		sort(le.begin(), le.end());
+		int i = 0, j = 0;
+		while(i < le.size() && j < chan.size()) {
+			cout << le[i++] << " " << chan[j++] << " ";
+		}
+		while(i < le.size()) {
+			cout << le[i++] << " ";
+		}
+		while(j < chan.size()) {
+			cout << chan[j++] << " ";
+		}
+		cout << endl;
+	}
+	return 0;
 }
-/*
 
-*/

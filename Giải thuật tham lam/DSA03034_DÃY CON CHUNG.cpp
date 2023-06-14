@@ -1,37 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n, m, p; cin >> n >> m >> p;
-        int a[n], b[m], c[p];
-        for(int i = 0; i < n; i++) cin >> a[i];
-        for(int i = 0; i < m; i++) cin >> b[i];
-        for(int i = 0; i < p; i++) cin >> c[i];
-        int check = 0, i = 0, j = 0, k = 0;
-        while(i < n && j < m && k < p){
-            if(a[i] == b[j] && b[j] == c[k]){
-                cout << a[i] << ' ';
-                check = 1;
-                i++;
-                j++;
-                k++;
-            }
-            else if(a[i] < b[j] || a[i] < c[k])i++;
-            else if(b[j] < a[i] || b[j] < c[k])j++;
-            else if(c[k] < a[i] || c[k] < b[j])k++;
-        }
-        if(!check)cout << "NO";
-        cout << endl;
-    }
+    int t;
+    cin >> t;
+    while(t--) {
+    	int n, m, k; cin >> n >> m >> k;
+    	int a[n], b[m], c[k];
+    	for (int &x : a) cin >> x;
+    	for (int &x : b) cin >> x;
+		for (int &x : c) cin >> x;
+		vector<int> res;
+		int i = 0, j = 0, z = 0;
+		while(i < n && j < m && z < k) {
+			if (a[i] == b[j] && b[j] == c[z]) {
+				res.push_back(a[i]);
+				i++;
+				j++;
+				z++;
+			}
+			else if (a[i] <= b[j] && a[i] <= c[z]) i++;
+			else if (b[j] <= a[i] && b[j] <= c[z]) j++;
+			else z++;
+		}
+		if (res.size() == 0) cout << "NO" << endl;
+		else {
+			for (int x : res) cout << x << " ";
+			cout << endl;
+		}
+	}
 }
-/*
 
-*/
+

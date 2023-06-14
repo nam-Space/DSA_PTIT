@@ -1,63 +1,67 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h> 
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
-
-pair<int, int> p[] = {{0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}};
-int test, k, m, n, visited[100][100];
-set<string> se;
-char a[100][100];
+int n, m, k;
+string s[101];
 vector<string> res;
+char a[101][101];
+bool ok[101][101];
+int X[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+int Y[] = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-void Try(int i, int j, string temp){
-    if(se.count(temp))res.pb(temp);
-    for(int t = 0; t < 8; t++){
-        int inew = p[t].first + i;
-        int jnew = p[t].second + j;
-        if(inew >= 0 && inew < m && jnew >= 0 && jnew < n && !visited[inew][jnew]){
-            visited[inew][jnew] = 1;
-            Try(inew, jnew, temp + a[inew][jnew]);
-            visited[inew][jnew] = 0;
-        }
-    }
+void nhap() {
+	cin >> k >> m >> n;
+	for (int i = 1; i <= k; i++) {
+		cin >> s[i];
+	}
+	for (int i = 1; i <= m; i++) {
+		for (int j = 1; j <= n; j++) {
+			cin >> a[i][j];
+		}
+	}
+	res.clear();
 }
 
-int main(){
-    quick();
-    cin >> test;
-    while(test--){
-        res.clear();
-        se.clear();
-        cin >> k >> m >> n;
-        for(int i = 0; i < k; i++){
-            string x; cin >> x;
-            se.insert(x);
-        }
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                cin >> a[i][j];
-            }
-        }
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                memset(visited, 0, sizeof(visited));
-                visited[i][j] = 1;
-                string s = "";
-                Try(i, j, s + a[i][j]);
-            }
-        }
-        if(!res.size())
-            cout << -1 << endl;
-        else{
-            for(auto x : res)
-                cout << x << ' ';
-            cout << endl;
-        }
-    }
+void Try(int i, int j, string tmp) {
+	for (int l = 0; l < k; l++) {
+		if (s[l] == tmp) {
+			res.push_back(tmp);
+		}
+	}
+	for (int l = 0; l < 8; l++) {
+		int x = i + X[l];
+		int y = j + Y[l];
+		if (x >= 1 && x <= m && y >= 1 && y <= n && !ok[x][y]) {
+			ok[x][y] = true;
+			Try(x, y, tmp + a[x][y]);
+			ok[x][y] = false;
+		}
+	}
 }
-/*
 
-*/
+int main(){ 
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		for (int i = 1; i <= m; i++) {
+			for (int j = 1; j <= n; j++) {
+				memset(ok, false, sizeof(ok));
+				string s = "";
+				ok[i][j] = true;
+				Try(i, j, s + a[i][j]);
+			}
+		}
+		if (res.size() == 0) {
+			cout << "-1" << endl;
+		}
+		else {
+			for (string u : res) {
+				cout << u << " ";
+			}
+			cout << endl;
+		}
+	}
+	return 0;
+}
+

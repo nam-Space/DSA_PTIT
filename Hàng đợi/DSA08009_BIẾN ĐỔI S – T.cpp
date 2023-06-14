@@ -1,35 +1,36 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+
+int bfs(int se, int en) {
+	int a[20000];
+	memset(a, -1, sizeof(a));
+	queue<int> q;
+	q.push(se);
+	a[se] = 0;
+	while(!q.empty()) {
+		int i = q.front(); q.pop();
+		if (a[en] != -1) return a[en];
+		if (i - 1 > 0 && a[i - 1] == -1) {
+			a[i - 1] = a[i] + 1;
+			q.push(i - 1);
+		}
+		if (i * 2 < 20000 && a[i * 2] == -1) {
+			a[i * 2] = a[i] + 1;
+			q.push(i * 2);
+		}
+	}
+	return a[en];
+}
 
 int main(){
-    int test; cin >> test;
-    while(test--){
-        ll s, t; cin >> s >> t;
-        set<ll> se;
-        queue<pair<ll, ll>> q;
-        q.push({s, 0});
-        se.insert(s);
-        while(!q.empty()){
-            pair<ll, ll> x = q.front(); q.pop();
-            if(x.first - 1 == t|| x.first * 2 == t){
-                cout << x.second + 1 << endl;
-                break;
-            }
-            if(!se.count(x.first - 1) && x.first - 1 > 0){
-                q.push({x.first - 1, x.second + 1});
-                se.insert(x.first - 1);
-            }
-            if(!se.count(x.first * 2) && x.first < t){
-                q.push({x.first * 2, x.second + 1});
-                se.insert(x.first * 2);
-            }
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int se, en;
+		cin >> se >> en;
+		cout << bfs(se, en) << endl;
+	}
 }
-/*
 
-*/

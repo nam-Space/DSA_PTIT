@@ -1,35 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int n, k, s, cnt, X[100];
+int n, k, s, cnt;
+int a[101];
 
-void Try(int i, int pos, int sum){
-    for(int j = pos; j <= n; j++){
-        if(sum + j <= s){
-            X[i] = j;
-            sum += j;
-            if(sum == s && i == k)
-                cnt++;
-            else if(sum < s && i < k)
-                Try(i + 1, j + 1, sum);
-            sum -= j;
-        }
-    }
+bool check() {
+	int sum = 0;
+	for (int i = 1; i <= k; i++) {
+		sum += a[i];
+	}
+	return sum == s;
 }
 
-int main(){
-    quick();
-    while(1){
-        cin >> n >> k >> s;
-        if(n == 0 && k == 0 && s == 0)break;
-        cnt = 0;
-        Try(1, 1, 0);
-        cout << cnt << endl;
-    }
+void Try(int i) {
+	for (int j = a[i - 1] + 1; j <= n - k + i; j++) {
+		a[i] = j;
+		if (i == k) {
+			if(check()) cnt++;
+		}
+		else Try(i + 1);
+	}
 }
-/*
 
-*/
+int main() {
+	while(cin >> n && cin >> k && cin >> s) {
+		if (n == 0 && k == 0 && s == 0) return 0;
+		cnt = 0;
+		for (int i = 1; i <= n; i++) {
+			a[i] = i;
+		}
+		Try(1);
+		cout << cnt << endl;
+	}
+	return 0;
+}

@@ -1,42 +1,44 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        int a[n], b[n];
-        for(int i = 0; i < n; i++){
-            cin >> a[i];
-            b[i] = a[i];
-        }
-        sort(b, b + n);
-        int i = 0, j = n - 1, l = 0, r = n;
-        while(i < n){
-            if(a[i] != b[i])
-            {
-                l = i;
-                break;
-            }
-            i++;
-        }
-        while(j){
-            if(a[j] != b[j])
-            {
-                r = j;
-                break;
-            }
-            j--;
-        }
-        cout << l + 1 << ' ' << r + 1 << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		int a[n];
+		for (int &x : a) cin >> x;
+		int l, r;
+		for (int i = 0; i < n - 1; i++) {
+			if (a[i] > a[i + 1]) {
+				l = i;
+				break;
+			}
+		}
+		for (int i = n - 1; i >= 1; i--) {
+			if (a[i] < a[i - 1]) {
+				r = i;
+				break;
+			}
+		}
+		int min_val = *min_element(a + l, a + r + 1);
+		int max_val = *max_element(a + l, a + r + 1);
+		for (int i = 0; i < l; i++) {
+			if (a[i] > min_val) {
+				l = i;
+			}
+		}
+		for (int i = n - 1; i > r; i--) {
+			if (a[i] < max_val) {
+				r = i;
+			}
+		}
+		cout << l + 1 << " " << r + 1 << endl;
+	}
+	return 0;
 }
-/*
 
-*/

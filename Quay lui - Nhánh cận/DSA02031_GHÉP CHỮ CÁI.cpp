@@ -1,47 +1,63 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
+char a[101];
+int x[101];
 char c;
-vector<string> s;
-int check[100], n;
+int n, m, k, used[101];
+vector<string> res;
 
-int solve(string s){
-    int n = s.length();
-    for(int i = 1; i < n - 1; i++){
-        if(s[i] == 'A' || s[i] == 'E'){
-            if((s[i - 1] != 'A' && s[i - 1] != 'E') && (s[i + 1] != 'A' && s[i + 1] != 'E'))
-                    return 0;
-        }
-    }
-    return 1;
+void nhap() {
+	cin >> c;
+	n = c - 64;
+	memset(used, 0, sizeof(used));
+	for (int i = 1; i <= n; i++) {
+		a[i] = i + 64;
+		x[i] = i;
+	}
+} 
+
+void in() {
+	for (int i = 1; i <= n; i++) {
+		cout << a[x[i]];
+	}
+	cout << endl;
 }
 
-void Try(char i, string t){
-    for(char j = i; j <= c; j++){
-        if(!check[j]){
-            t += j;
-            check[j] = 1;
-            if(t.size() == n && solve(t))
-                cout << t << endl;
-            else
-                Try(i, t);
-            check[j] = 0;
-            t.pop_back();
-        }
-    }
+bool check() {
+	for (int i = 2; i <= n - 1; i++) {
+		if (a[x[i]] == 'E' || a[x[i]] == 'A') {
+			if (a[x[i - 1]] != 'E' && a[x[i + 1]] != 'E' && a[x[i - 1]] != 'A' && a[x[i + 1]] != 'A') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void Try(int i) {
+	for (int j = 1; j <= n; j++) {
+		if (!used[j]) {
+			x[i] = j;
+			used[j] = 1;
+			if (i == n) {
+				if (check()) in();
+			}
+			else Try(i + 1);
+			used[j] = 0;
+		}
+	}
 }
 
 int main(){
-    quick();
-    cin >> c;
-    n = c - 'A' + 1;
-    Try('A', "");
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+	} 
 }
-/*
 
-*/

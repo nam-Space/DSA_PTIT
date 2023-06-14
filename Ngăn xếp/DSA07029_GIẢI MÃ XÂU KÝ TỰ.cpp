@@ -45,6 +45,3 @@ int main(){
         cout << solve(s) << endl;
     }
 }
-/*
-
-*/

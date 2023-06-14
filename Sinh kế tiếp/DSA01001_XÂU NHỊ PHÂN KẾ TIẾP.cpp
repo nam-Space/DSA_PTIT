@@ -1,48 +1,37 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-bool check(int a[], int n){
-    int cnt = 0;
-    for(int i = 0; i < n; i++)if(!a[i])cnt = 1;
-    return cnt == 1;
-}
+int a[1001];
+int n;
 
-void out(int a[], int n){
-    for(int i = 0; i < n; i++)cout << a[i];
-    cout << endl;
-}
-
-void next(int a[], int n){
-    int i = n - 1;
-    while(i >= 0 && a[i] == 1){
-        a[i] = 0;
-        i--;
-    }
-    a[i] = 1;
+void sinh() {
+	int i = n;
+	while(a[i] == 1 && i >= 1) {
+		a[i] = 0;
+		i--;
+	}
+	if (i == 0) return;
+	a[i] = 1;
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        string s; cin >> s;
-        int n = s.length(), a[n];
-        for(int i = 0; i < n; i++)a[i] = s[i] - '0';
-        if(!check(a, n)){
-            string temp(n, '0');
-            cout << temp << endl;
-        }else{
-            next(a, n);
-            out(a, n);
-        }
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		memset(a, 0, sizeof(a));
+		string s;
+		cin >> s;
+		n = s.size();
+		for (int i = 1; i <= n; i++) {
+			a[i] = s[i - 1] - '0';
+		}
+		sinh();
+		for (int i = 1; i <= n; i++) {
+			cout << a[i];
+		}
+		cout << endl;
+	}
 }
-
-/*
-
-*/

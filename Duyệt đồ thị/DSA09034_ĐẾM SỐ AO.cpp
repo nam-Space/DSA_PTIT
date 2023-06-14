@@ -1,44 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int n, m, cnt;
+const int mod = 1e9 + 7;
+
+int n, m;
+bool visited[1001][1001];
 char a[1001][1001];
 
-pair<int, int> path[] = {{0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}};
+int dx[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+int dy[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
 
-void dfs(int i, int j){
-    a[i][j] = '.';
-    for(int k = 0; k < 8; k++){
-        int inew = path[k].first + i;
-        int jnew = path[k].second + j;
-        if(inew >= 0 && inew < n && jnew >= 0 && jnew < m && a[inew][jnew] == 'W'){
-            dfs(inew, jnew);
-        }
-    }
+void nhap() {
+	memset(visited, false, sizeof(visited));
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> a[i][j];
+		}
+	}
 }
-int main(){
-    quick();
-    cin >> n >> m;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
-            cin >> a[i][j];
-        }
-    }
-    cnt = 0;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
-            if(a[i][j] == 'W'){
-                dfs(i, j);
-                cnt++;
-            }
-        }
-    }
-    cout << cnt;
-}
-/*
 
-*/
+void dfs(int i, int j) {
+	visited[i][j] = true;
+	for (int k = 0; k < 8; k++) {
+		int i1 = i + dx[k];
+		int j1 = j + dy[k];
+		if (i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= m && a[i1][j1] == 'W' && !visited[i1][j1]) {
+			dfs(i1, j1);
+		}
+	}
+}
+
+int connectedComponent() {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (a[i][j] == 'W' && !visited[i][j]) {
+				cnt++;
+				dfs(i, j);
+			}
+		}
+	}
+	return cnt;
+}
+
+int main() {
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		cout << connectedComponent() << endl;
+	}
+}
+

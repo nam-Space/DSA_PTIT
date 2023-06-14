@@ -1,47 +1,66 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
-int X[100], n, k, ok;
+const int mod = 1e9 + 7;
 
-void next(){
-	int i = k;
-	while(i > 0 && X[i] == n - k + i)i--;
-	if(!i)ok = 0;
-	else{
-		X[i]++;
-		for(int j = i + 1; j <= k; j++)
-			X[j] = X[j - 1] + 1;
+int a[1001], x[1001];
+int n, k, ok;
+map<vector<int>, int> mp;
+
+void nhap() {
+	mp.clear();
+	ok = 0;
+	cin >> n >> k;
+	for (int i = 1; i <= k; i++) {
+		cin >> x[i];
+	}
+	for (int i = 1; i <= k; i++) {
+		a[i] = i;
 	}
 }
 
-bool check(int a[]){
-	for(int i = 1; i <= k; i++)
-		if(X[i] != a[i])
-			return false;
+void sinh() {
+	int i = k;
+	while(a[i] == n - k + i && i >= 1) {
+		i--;
+	}
+	if (i == 0) ok = 1;
+	else {
+		a[i]++;
+		for (int j = i + 1; j <= k; j++) {
+			a[j] = a[j - 1] + 1;
+		}
+	}
+}
+
+bool check(vector<int> v) {
+	for (int i = 0; i < v.size(); i++) {
+		if (v[i] != x[i + 1]) return false;
+	}
 	return true;
 }
 
 int main(){
-	int test; cin >> test;
-	while(test--){
-		int a[100];
-		cin >> n >> k;
-		for(int i = 1; i <= k; i++)X[i] = i;
-        for(int i = 1; i <= k; i++)cin >> a[i];
-        ok = 1;
-		int cnt = 1;
-		while(ok){
-			if(check(a))break;
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		int cnt = 0;
+		while(!ok) {
 			cnt++;
-			next();
+			vector<int> v;
+			for (int i = 1; i <= k; i++) {
+				v.push_back(a[i]);
+			}
+			mp.insert({v, cnt});
+			sinh();
 		}
-		cout << cnt << endl;
+		for (auto it : mp) {
+			if (check(it.first)) {
+				cout << it.second << endl;
+				break;
+			}
+		}
 	}
-    
 }
-/*
-
-*/

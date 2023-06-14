@@ -1,53 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-struct Node{
-    char c;
-    Node *left, *right;
-};
-
-typedef Node* Tree;
-
-Tree makeNode(char c){
-    Tree res = new Node;
-    res -> c = c;
-    res -> left = res -> right = NULL;
-    return res;
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		string s;
+		cin >> s;
+		stack<string> st;
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/') {
+				string a = st.top(); st.pop();
+				string b = st.top(); st.pop();
+				string res = b + s[i] + a;
+				st.push(res);
+			}
+			else st.push(string(1, s[i]));
+		} 
+		cout << st.top() << endl;
+	}
+	return 0;
 }
-
-void out(Tree x){
-    if(x != NULL){
-        out(x -> left);
-        cout << x -> c;
-        out(x -> right);
-    }
-}
-
-int main(){
-    quick();
-    int test; cin >> test;
-    string s;
-    while(test--){
-        cin >> s;
-        stack<Tree> st;
-        for(char x : s){
-            if(x == '+' || x == '-' || x == '*' || x == '/'){
-                Tree tmp = makeNode(x);
-                tmp -> right = st.top(); st.pop();
-                tmp -> left = st.top(); st.pop();
-                st.push(tmp);
-            }
-            else st.push(makeNode(x));
-        }
-        out(st.top());
-        cout << endl;
-    }
-}
-/*
-
-*/

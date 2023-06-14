@@ -1,30 +1,43 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+void selection_sort(int a[], int n) {
+	for (int i = 0; i < n - 1; i++) {
+		int min_pos = i;
+		for (int j = i + 1; j < n; j++) {
+			if (a[j] < a[min_pos]) {
+				min_pos = j;
+			}
+		}
+		swap(a[i], a[min_pos]);
+	}
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        int a[n];
-        for(int i = 0; i < n; i++)cin >> a[i];
-        sort(a, a + n, greater<int>());
-        int l = 0, r = n - 1;
-        while(l < n / 2 && r > n / 2){
-            cout << a[l] << ' ' << a[r] << ' ';
-            l++;
-            r--;
-        }
-        if(n % 2 == 0)cout << a[l] << ' ' << a[r];
-        else cout << a[l];
-        cout << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		int a[n];
+		for (int &x : a) cin >> x;
+		selection_sort(a, n);
+		if (n % 2 == 1) {
+			for (int i = 0; i <= n / 2; i++) {
+				if (i != n / 2) cout << a[n - i - 1] << " " << a[i] << " ";
+				else cout << a[n / 2];
+			}
+		}
+		else {
+			for (int i = 0; i <= n / 2; i++) {
+				if (i != n / 2) cout << a[n - i - 1] << " " << a[i] << " ";
+			}
+		}
+		cout <<endl;
+	}
+	return 0;
 }
-/*
 
-*/

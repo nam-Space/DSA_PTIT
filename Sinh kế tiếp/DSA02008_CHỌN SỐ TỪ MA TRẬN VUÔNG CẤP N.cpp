@@ -1,52 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int n, k, a[100][100], visited[100], X[100];
-vector<vector<int>> v;
+const int mod = 1e9 + 7;
 
-void Try(int i){
-    for(int j = 1; j <= n; j++){
-        if(!visited[j]){
-            X[i] = j;
-            visited[j] = 1;
-            if(i == n){
-                int index = 1, temp = 0;
-                for(int i = 1; i <= n; i++){
-                    temp += a[i][X[index++]];
-                }
-                if(temp == k){
-                    vector<int> res(X + 1, X + i + 1);
-                    v.pb(res);
-                }
-            }else
-                Try(i + 1);
-            visited[j] = 0;
-        }
-    }
+int n, k;
+int a[101][101], x[101];
+bool used[101];
+vector<vector<int>> res;
+
+void nhap() {
+	res.clear();
+	memset(x, 0, sizeof(x));
+	memset(used, false, sizeof(used));
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cin >> a[i][j];
+		}
+	}
 }
 
-
-int main(){
-    quick();
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++){
-            cin >> a[i][j];
-        }
-    }
-    Try(1);
-    cout << v.size() << endl;
-    for(auto x : v){
-        for(auto y : x){
-            cout << y << ' ';
-        }
-        cout << endl;
-    }
+bool check() {
+	int sum = 0;
+	for (int i = 1; i <= n; i++) {
+		sum += a[i][x[i]];
+	}
+	return sum == k;
 }
-/*
 
-*/
+void process() {
+	vector<int> v;
+	for (int i = 1; i <= n; i++) {
+		v.push_back(x[i]);
+	}
+	res.push_back(v);
+}
+
+void Try(int i) {
+	for (int j = 1; j <= n; j++) {
+		if (!used[j]) {
+			x[i] = j;
+			used[j] = true;
+			if (i == n) {
+				if (check()) process();
+			}
+			else Try(i + 1);
+			used[j] = false;
+		}
+	}
+}
+
+int main() {
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+		cout << res.size() << endl;
+		for (vector<int> v : res) {
+			for (int x : v) {
+				cout << x << " ";
+			}
+			cout << endl;
+		}
+	}
+	return 0;
+}
+

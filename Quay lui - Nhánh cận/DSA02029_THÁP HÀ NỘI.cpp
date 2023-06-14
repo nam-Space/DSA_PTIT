@@ -1,34 +1,35 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-void trans(int n, char a, char c){
-    v.push_back({a, c});
+int a[101];
+int x[101];
+int n, m, k, used[101];
+vector<string> res;
+
+void nhap() {
+	cin >> n;
 }
 
-void tower(int n, char a, char b, char c){
-    if(n == 1)
-        trans(n, a, c);
-    else{
-        tower(n - 1, a, c, b);
-        trans(n - 1, a, c);
-        tower(n - 1, b, a, c);
-    }
+void Try(int n, char goc, char trungGian, char dich) {
+	if (n == 0) return;
+	if (n == 1) cout << goc << " -> " << dich << endl;
+	else {
+		Try(n - 1, goc, dich, trungGian);
+		Try(1, goc, trungGian, dich);
+		Try(n - 1, trungGian, goc, dich);
+	}
 }
+
 
 int main(){
-    quick();
-    int n; cin >> n;
-    char a = 'A', b = 'B', c = 'C';
-    tower(n, a, b, c);
-    for(auto x : v)
-        cout << x.first << " -> " << x.second << endl;
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(n, 'A', 'B', 'C');
+	}
 }
 
-/*
-
-*/

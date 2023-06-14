@@ -1,26 +1,27 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        int a[n];
-        for(int &x : a) cin >> x;
-        ll dp[n + 1] = {0};
-        dp[0] = a[0], dp[1] = max(a[0], a[1]);
-        for(int i = 2; i < n; i++){
-            dp[i] = max(dp[i - 1], dp[i - 2] + a[i]);
-        }
-        cout << dp[n - 1] << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		int *a = new int[n + 1];
+		for (int i = 1; i <= n; i++) cin >> a[i];
+		int dp[n + 1];
+		memset(dp, 0, sizeof(dp));
+		dp[1] = a[1];
+		dp[2] = max(a[1], a[2]);
+		for (int i = 3; i <= n; i++) {
+			dp[i] = max(dp[i - 1], dp[i - 2] + a[i]);
+		}
+		cout << dp[n] << endl;
+		delete []a;
+	} 
+	return 0;
 }
-/*
 
-*/

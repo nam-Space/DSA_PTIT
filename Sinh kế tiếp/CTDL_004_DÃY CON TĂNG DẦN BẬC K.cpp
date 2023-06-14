@@ -1,44 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
-int n, k, a[100], X[100], cnt, ok;
+const int mod = 1e9 + 7;
 
-void next(){
-	int i = k;
-	while(i > 0 && X[i] == n - k + i)i--;
-	if(!i)ok = 0;
-	else{
-		X[i]++;
-		for(int j = i + 1; j <= k; j++)
-			X[j] = X[j - 1] + 1;
+int n, k, cnt;
+int a[101], x[101];
+
+void nhap() {
+	cnt = 0;
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+		x[i] = i;
 	}
 }
 
-bool check(){
-	for(int i = 1; i <= k - 1; i++)
-		if(a[X[i]] > a[X[i + 1]])
-			return false;
+bool check() {
+	vector<int> v1;
+	vector<int> v2;
+	for (int i = 1; i <= k; i++) {
+		v1.push_back(a[x[i]]);
+		v2.push_back(a[x[i]]);
+	}
+	sort(v1.begin(), v1.end());
+	for (int i = 0; i < v1.size(); i++) {
+		if (v1[i] != v2[i]) return false;
+	}
 	return true;
 }
 
-int main(){
-	quick();
-	cin >> n >> k;
-	for(int i = 1; i <= n; i++){
-		cin >> a[i];
-		X[i] = i;
+void Try(int i) {
+	for (int j = x[i - 1] + 1; j <= n - k + i; j++) {
+		x[i] = j;
+		if (i == k) {
+			if (check()) cnt++;
+		}
+		else Try(i + 1);
 	}
-	ok = 1, cnt = 0;
-	while(ok){
-		if(check())
-			cnt++;
-		next();
-	}
-	cout << cnt;
 }
-/*
 
-*/
+int main(){
+    int t;
+    t = 1;
+    while(t--) {
+    	nhap();
+    	Try(1);
+    	cout << cnt << endl;
+	}
+}
+

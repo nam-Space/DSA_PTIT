@@ -1,29 +1,34 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+int selection_sort(int a[], int n) {
+	int cnt = 0;
+	for (int i = 0; i < n - 1; i++) {
+		int min_pos = i;
+		for (int j = i + 1; j < n; j++) {
+			if (a[j] < a[min_pos]) min_pos = j;
+		}
+		if (i != min_pos) {
+			swap(a[i], a[min_pos]);
+			cnt++;
+		}
+	}
+	return cnt;
+}
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        int a[n], cnt = 0;
-        for(int &x : a)cin >> x;
-        for(int i = 0; i < n; i++){
-            int min_v = i;
-            for(int j = i + 1; j < n; j++)if(a[j] < a[min_v])min_v = j;
-            if(a[i] != a[min_v]){
-                swap(a[i], a[min_v]);
-                cnt++;
-            }
-        }
-        cout << cnt << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		int n;
+		cin >> n;
+		int a[n];
+		for (int &x : a) cin >> x;
+		cout << selection_sort(a, n) << endl;
+	}
+	return 0;
 }
-/*
 
-*/

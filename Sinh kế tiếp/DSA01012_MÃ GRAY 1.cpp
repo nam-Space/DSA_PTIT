@@ -1,32 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
+int a[101], b[101];
+int n;
 
-int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        vector<string> L1, L2;
-        L1.pb("0");L1.pb("1");
-        L2.pb("1");L2.pb("0");
-        for(int i = 1; i <= n - 1; i++){
-            for(string &x : L1)x = "0" + x;
-            for(string &x : L2){
-                x = "1" + x;
-                L1.pb(x);
-            }
-            L2.clear();
-            for(int i = L1.size() - 1; i >= 0; i--)L2.pb(L1[i]);
-        }
-        for(string x : L1)cout << x << ' ';
-        cout << endl;
-    }
+void nhap() {
+	cin >> n;
+	memset(a, 0, sizeof(a));
 }
-/*
 
-*/
+void ghiNhan() {
+	for (int i = n; i >= 2; i--) {
+		b[i] = (a[i] + a[i - 1]) % 2;
+	} 
+	b[1] = a[1];
+	for (int i = 1; i <= n; i++) {
+		cout << b[i];
+	}
+	cout << " ";
+}
+
+void Try(int i) {
+	for (int j = 0; j <= 1; j++) {
+		a[i] = j;
+		if (i == n) {
+			ghiNhan();
+		}
+		else Try(i + 1);
+	}
+}
+
+int main() {
+	int t;
+	cin >> t;
+	while(t--) {
+		nhap();
+		Try(1);
+		cout << endl;
+	}
+}

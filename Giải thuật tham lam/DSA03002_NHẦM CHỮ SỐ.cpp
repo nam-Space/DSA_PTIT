@@ -1,21 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
 int main(){
-    quick();
-    string a, b; cin >> a >> b;
-    for(char &x : a)if(x == '6')x = '5';
-    for(char &x : b)if(x == '6')x = '5';
-    cout << stoi(a) + stoi(b) << ' ';
-    for(char &x : a)if(x == '5')x = '6';
-    for(char &x : b)if(x == '5')x = '6';
-    cout << stoi(a) + stoi(b) << endl;  
+    int t;
+    t = 1;
+    while(t--) {
+    	int a, b;
+    	cin >> a >> b;
+    	string s1 = to_string(a);
+    	string s2 = to_string(b);
+    	for (int i = 0; i < s1.size(); i++) {
+    		if (s1[i] == '6') s1[i] = '5';
+		}
+		for (int i = 0; i < s2.size(); i++) {
+    		if (s2[i] == '6') s2[i] = '5';
+		}
+		cout << stoi(s1) + stoi(s2) << " ";
+		for (int i = 0; i < s1.size(); i++) {
+    		if (s1[i] == '5') s1[i] = '6';
+		}
+		for (int i = 0; i < s2.size(); i++) {
+    		if (s2[i] == '5') s2[i] = '6';
+		}
+		cout << stoi(s1) + stoi(s2) << endl;
+	}
 }
-/*
 
-*/
+

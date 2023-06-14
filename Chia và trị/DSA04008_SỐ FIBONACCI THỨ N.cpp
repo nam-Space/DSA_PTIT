@@ -1,48 +1,49 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-struct Matrix{
-    ll M[2][2];
-    Matrix operator * (Matrix a){
-        Matrix b;
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 2; j++){
-                b.M[i][j] = 0;
-                for(int k = 0; k < 2; k++){
-                    b.M[i][j] += M[i][k] * a.M[k][j];
-                    b.M[i][j] %= mod; 
-                }
-            }
-        }
-        return b;
-    }
-};
+int n;
+ll a[2][2], b[2][2];
 
-Matrix powMOD(Matrix a, ll n){
-    if(n == 1)return a;
-    Matrix temp = powMOD(a, n / 2);
-    if(n % 2)
-        return temp * temp * a;
-    else
-        return temp * temp;
+void Mul(ll a[2][2], ll b[2][2]) {
+	ll tmp[2][2];
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			tmp[i][j] = 0;
+			for (int k = 0; k < 2; k++) {
+				tmp[i][j] += a[i][k] * b[k][j];
+				tmp[i][j] %= mod;
+			}
+		}
+	}
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			a[i][j] = tmp[i][j];
+		}
+	}
+}
+
+void Pow(int k) {
+	if (k < 2) return;
+	Pow(k / 2);
+	Mul(a, a);
+	if (k % 2 == 1) Mul(a, b);
 }
 
 int main(){
-    quick();
-    int test; cin >> test;
-    while(test--){
-        int n; cin >> n;
-        Matrix a;
-        a.M[0][0] = a.M[1][0] = a.M[0][1] = 1; a.M[1][1] = 0;
-        Matrix ans = powMOD(a, n);
-        cout << ans.M[1][0] << endl;
-    }
+	int t;
+	cin >> t;
+	while(t--) {
+		cin >> n;
+		a[0][0] = a[0][1] = a[1][0] = 1;
+		a[1][1] = 0;
+		b[0][0] = b[0][1] = b[1][0] = 1;
+		b[1][1] = 0;
+		Pow(n);
+		cout << a[0][1] << endl;
+	}
+	return 0;
 }
-/*
 
-*/

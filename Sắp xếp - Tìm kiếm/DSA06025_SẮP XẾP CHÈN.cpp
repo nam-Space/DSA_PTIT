@@ -1,26 +1,45 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
+
+void insertion_sort(int a[], int n) {
+	int cnt = 0;
+	for (int i = 1; i < n; i++) {
+		cout << "Buoc " << cnt << ": ";
+		for (int j = 0; j < i; j++) {
+			cout << a[j] << " ";
+		}
+		cout << endl;
+		cnt++;
+		int pos = i - 1;
+		int x = a[i];
+		while(pos >= 0 && a[pos] > x) {
+			a[pos + 1] = a[pos];
+			pos--;
+		}
+		a[pos + 1] = x;
+	}
+	cout << "Buoc " << cnt << ": ";
+	for (int i = 0; i < n; i++) {
+		cout << a[i] << " ";
+	}
+	cout << endl;
+}
 
 int main(){
-	int n; cin >> n;
-	int a[n];
-	for(int &x : a)cin >> x;
-	for(int i = 0; i < n; i++){
-		int k = a[i], j = i - 1;
-		while(j >= 0 && a[j] > k){
-			a[j + 1] = a[j];
-			j--;
+	int t;
+	t = 1;
+	while(t--) {
+		int n;
+		cin >> n;
+		int *a = new int[n];
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
 		}
-		a[j + 1] = k;
-		cout << "Buoc " << i << ": ";
-		for(int k = 0; k < i + 1; k++)cout << a[k] << ' ';
-		cout << endl;
+		insertion_sort(a, n);
 	}
+	return 0;
 }
-/*
 
-*/

@@ -1,33 +1,44 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
 using ll = long long;
-int mod = 1e9 + 7;
+const int mod = 1e9 + 7;
 
-int solve(int a[], int l, int r, int X){
-	if(l <= r){
-		int m = (l + r) / 2;
-		if(a[m] == X)return m;
-		else if(a[m] > X)return solve(a, l, m - 1, X);
-		else return solve(a, m + 1, r, X);
-	}else
-		return -1;
+void heapify(int a[], int n, int i) {
+	int l = 2 * i + 1, r = 2 * i + 2;
+	int largest = i;
+	if (l < n && a[largest] < a[l]) largest = l;
+	if (r < n && a[largest] < a[r]) largest = r;
+	if (largest != i) {
+		swap(a[largest], a[i]);
+		heapify(a, n, largest);
+	}
+}
+
+void heap_sort(int a[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--) {
+		heapify(a, n, i);
+	}
+	for (int i = n - 1; i >= 0; i--) {
+		swap(a[0], a[i]);
+		heapify(a, i, 0);
+	}
 }
 
 int main(){
-	int test; cin >> test;
-	while(test--){
-		int n, X; cin >> n >> X;
-		int a[n]; 
-		for(int &x : a)cin >> x;
-		int temp = solve(a, 0, n - 1, X);
-		if(temp != -1)
-			cout << 1 << endl;
-		else
-			cout << -1 << endl;
+	int t;
+	cin >> t;
+	while(t--) {
+		int n, k;
+		cin >> n >> k;
+		int *a = new int[n];
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+		}
+		heap_sort(a, n);
+		if (binary_search(a, a + n, k)) cout << "1" << endl;
+		else cout << "-1" << endl;
 	}
+	return 0;
 }
-/*
 
-*/

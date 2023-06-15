@@ -1,49 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
+int n, m, res;
+vector<int> adj[1000001];
+bool visited[1000001];
 
-int BFS(vector<int> a[])
-{
-    bitset<100005> bs;
-    int res = -1;
-    queue<int> q;
-    int f[100005] = {};
-    int top;
-    q.push(1);
-    bs[1] = 1;
-    while(q.size()){
-        top = q.front();
-        q.pop();
-        for(int &x : a[top]){
-            if(!bs[x]){
-                f[x] = f[top] + 1;
-                res = max(res, f[x]);
-                q.push(x);
-            }
-        }
-    }
-    return res;
+void nhap() {
+	res = 0;
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1000001; i++) {
+		adj[i].clear();
+	}
+	cin >> n;
+	m = n - 1;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+	}
+}
+
+void bfs(int u) {
+	queue<pair<int, int>> q;
+	q.push({u, 0});
+	visited[u] = true;
+	while(!q.empty()) {
+		pair<int, int> top = q.front(); q.pop();
+		res = max(res, top.second);
+		for (int x : adj[top.first]) {
+			if (!visited[x]) {
+				q.push({x, top.second + 1});
+				visited[top.first] = true;
+			}
+		}
+	}
 }
 
 int main(){
-    quick();
-    int test, n, x, y;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        --n;
-        vector<int> a[n + 5];
-        while(n--){
-            cin >> x >> y;
-            a[x].pb(y);
-        }
-        cout << BFS(a) << endl;
-    }
+	int t; 
+	cin >> t;
+	while(t--){
+		nhap();
+		bfs(1);
+		cout << res << endl;
+	}
+	return 0;
 }
-/*
 
-*/
+

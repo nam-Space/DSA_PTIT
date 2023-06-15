@@ -1,66 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
-using ll = long long;
-int mod = 1e9 + 7;
+int n, m;
+vector<int> adj[1001];
+bool visited[1001];
+int parent[1001];
+vector<vector<int>> res;
 
-void BFS(vector<int> a[], int trace[])
-{
-    queue<int> q;
-    bitset<1005> visited;
-    visited[1] = 1;
-    q.push(1);
-    int top;
-    while(q.size()){
-        top = q.front();
-        q.pop();
-        for(int &x : a[top]){
-            if(!visited[x]){
-                visited[x] = 1;
-                trace[x] = top;
-                q.push(x);
-            }
-        }
-    }
+void nhap() {
+	res.clear();
+	memset(parent, 0, sizeof(parent));
+	memset(visited, false, sizeof(visited));
+	for (int i = 0; i < 1001; i++) {
+		adj[i].clear();
+	}
+	cin >> n;
+	m = n - 1;
+	for (int i = 0; i < m; i++) {
+		int x, y; cin >> x >> y;
+		adj[x].push_back(y);
+	}
 }
 
-void findPath(int trace[], int E){
-    stack<int> path;
-    path.push(E);
-    while(trace[E]){
-        E = trace[E];
-        path.push(E);
-    }
-    while(path.size()){
-        cout << path.top() << ' ';
-        path.pop();
-    }
-    cout << endl;
+void dfs(int u) {
+	visited[u] = true;
+	for (int x : adj[u]) {
+		if (!visited[x]) {
+			parent[x] = u;
+			dfs(x);
+		}
+	}
 }
 
 int main(){
-    quick();
-    int test, n;
-    cin >> test;
-    while(test--){
-        cin >> n;
-        vector<int> a[n + 5];
-        int x, y;
-        bitset<1005> f;
-        for(int i = 1; i < n; ++i){
-            cin >> x >> y;
-            a[x].pb(y);
-            f[x] = 1;
-        }
-        int trace[1005] = {};
-        BFS(a, trace);
-        for(int i = 2; i <= n; ++i)
-            if(!f[i])
-                findPath(trace, i);
-    }
+	int t; 
+	cin >> t;
+	while(t--){
+		nhap();
+		dfs(1);
+		for (int i = 1; i <= n; i++) {
+			if (adj[i].size() == 0) {
+				vector<int> v;
+				int en = i;
+				int st = 1;
+				while(en != st) {
+					v.push_back(en);
+					en = parent[en];
+				}
+				v.push_back(en);
+				reverse(v.begin(), v.end());
+				res.push_back(v);
+			}
+		}
+		for (vector<int> v : res) {
+			for (int x : v) cout << x << " ";
+			cout << endl;
+		}
+	}
+	return 0;
 }
-/*
 
-*/
+

@@ -1,1 +1,1 @@
-DSA PTIT in code.ptit.edu.vn
+DSA PTIT in code.ptit.edu.vn by Nguyễn Viết Nam

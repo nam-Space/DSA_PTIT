@@ -1,26 +1,32 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 using ll = long long;
-const int mod = 1e9 + 7;
+int mod = 1e9 + 7;
 
-void nhap(ll a[], int n) {
-	for (int i = 0; i < n; i++) cin >> a[i];
+void nhap(int a[], int n) {
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
 }
 
 int main(){
 	int t;
-	cin >> t;
-	while(t--) {
-		int n;
-		cin >> n;
-		int cnt[2] = {0};
-		for (int i = 0; i < n; i++) {
-			int x; cin >> x;
-			cnt[x]++;
+    cin >> t;
+    while(t--){
+    	int n;
+    	cin >> n;
+    	int a[n];
+    	nhap(a, n);
+    	auto it = lower_bound(a, a + n, 1);
+    	int p = it - a; // vi tri dau tien a[i] = 1
+    	if (p == n) { // neu ko tim thay a[i] = 1 -> full 0
+    		cout << n << endl;
 		}
-		cout << cnt[0] << endl;
-	} 
-	return 0;
+		else { // tim thay a[i] = 1
+			p--;
+			cout << p + 1 << endl;
+		}
+    }
+    return 0;
 }
-

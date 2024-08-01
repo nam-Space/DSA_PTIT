@@ -5,48 +5,46 @@ using ll = long long;
 const int mod = 1e9 + 7;
 
 vector<string> v;
-vector<string> ans;
 
 int mu(string s) {
-	int sum = 0;
+	string sum = "";
 	int index = s.find("^") + 1;
 	for (int i = index; i < s.size(); i++) {
-		sum = sum * 10 + s[i] - '0';
+		sum += s[i];
 	}
-	return sum;
+	return stoi(sum);
 }
 
 bool cmp(string s1, string s2) {
 	int mu1 = mu(s1);
 	int mu2 = mu(s2);
 	return mu1 > mu2;
-} 
+}
 
 void nhap() {
 	v.clear();
-	ans.clear();
 	string s1, s2;
 	getline(cin, s1);
 	getline(cin, s2);
 	stringstream ss1(s1);
 	stringstream ss2(s2);
-	string tmp;
-	while(ss1 >> tmp) {
-		if (tmp != "+") v.push_back(tmp);
+	string token;
+	while(ss1 >> token) {
+		if (token != "+") v.push_back(token);
 	}
-	while(ss2 >> tmp) {
-		if (tmp != "+") v.push_back(tmp);
+	while(ss2 >> token) {
+		if (token != "+") v.push_back(token);
 	}
 	sort(v.begin(), v.end(), cmp);
 }
 
-int soHang(string s) {
-	int sum = 0;
+int hang(string s) {
+	string sum = "";
 	int index = s.find("*");
 	for (int i = 0; i < index; i++) {
-		sum = sum * 10 + s[i] - '0';
+		sum += s[i];
 	}
-	return sum;
+	return stoi(sum);
 }
 
 int main() {
@@ -56,31 +54,23 @@ int main() {
 	while(t--) {
 		nhap();
 		stack<string> st;
-		reverse(v.begin(), v.end());
-		for (string s : v) st.push(s);
-		while(!st.empty()) {
-			string s1 = st.top(); st.pop();
-			string res = s1;
-			int soMu1 = mu(s1);
-			int soHang1 = soHang(s1);
-			int tongHang = soHang1;
-			if (!st.empty()) {
-				string s2 = st.top();
-				int soMu2 = mu(s2);
-				int soHang2 = soHang(s2);
-				if (soMu1 == soMu2) {
-					tongHang += soHang2;
-					res = "";
-					res = to_string(tongHang) + "*x^" + to_string(soMu1);
-					st.pop();
-				}
-			}
-			ans.push_back(res);
+		int mu_max = mu(v[0]);
+		int res[mu_max + 1];
+		int a[mu_max + 1];
+		memset(res, 0, sizeof(res));
+		memset(a, 0, sizeof(a));
+		for (int i = 0; i < v.size(); i++) {
+			int soMu = mu(v[i]);
+			int soHang = hang(v[i]);
+			res[soMu] += soHang;
+			a[soMu] = 1;
 		}
-		for (int i = 0; i < ans.size() - 1; i++) {
-			cout << ans[i] << " + ";
-		} 
-		cout << ans[ans.size() - 1] << endl;
+		string ans = "";
+		for (int i = mu_max; i >= 0; i--) {
+			if (a[i]) {
+				ans += " + " + to_string(res[i]) + "*x^" + to_string(i);
+			}
+		}
+		cout << ans.substr(3) << endl;
 	} 
 }
-

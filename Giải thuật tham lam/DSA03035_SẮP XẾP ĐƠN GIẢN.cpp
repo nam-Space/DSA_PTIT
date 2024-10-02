@@ -2,30 +2,25 @@
 using namespace std;
 
 using ll = long long;
-const int mod = 1e9 + 7;
+int mod = 1e9 + 7;
+
+int f[100001];
 
 int main(){
-    int t;
+	int t;
     t = 1;
-    while(t--) {
+    while(t--){
+    	memset(f, 0, sizeof(f));
     	int n;
     	cin >> n;
-    	int index[n + 1];
-    	for (int i = 1; i <= n; i++) {
-    		int x; cin >> x;
-    		index[x] = i;
+    	int a[n];
+    	int max_cnt = INT_MIN;
+    	for (int &x : a) cin >> x;
+    	for (int x : a) {
+    		f[x] = f[x - 1] + 1;
+    		max_cnt = max(max_cnt, f[x]);
 		}
-		int res = INT_MAX;
-		int dem = 1;
-		int i = index[1];
-		for (int j = 2; j <= n; j++) {
-			if (index[j] > i) dem++;
-			else dem = 1;
-			i = index[j];
-			res = min(res, n - dem);
-		}
-		cout << res << endl;
-	}
+		cout << n - max_cnt << endl;
+		
+    }
 }
-
-

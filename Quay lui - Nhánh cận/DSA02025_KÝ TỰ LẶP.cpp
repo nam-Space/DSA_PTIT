@@ -1,45 +1,54 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
-int mod = 1e9 + 7;
-int n, min_val = INT_MAX, visited[1001], X[1001];
-vector<string> v;
+const int mod = 1e9 + 7;
 
-int solve(string s, string t){
-    int mp[256] = {0};
-    for(char x : s)mp[x]++;
-    int cnt = 0;
-    for(char x : t)if(mp[x])cnt++;
-    return cnt;
+int n, k, x[101], used[101];
+string a[101];
+int res;
+
+void nhap() {
+	res = INT_MAX;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+	}
+	memset(used, 0, sizeof(used));
 }
 
-void Try(int dem, int sum, int k){
-    for(int j = 1; j <= n; j++){
-        if(!visited[j]){
-            visited[j] = 1;
-            if(dem == n)
-                min_val = min(min_val, sum + solve(v[k], v[j]));
-            else if(min_val > sum && dem < n)
-                Try(dem + 1, sum + solve(v[k], v[j]), j);
-            visited[j] = 0;
-        }
-    }
+void process() {
+	int cnt = 0;
+	for (int i = 1; i <= n - 1; i++) {
+		set<char> se;
+		for (int j = 0; j < a[x[i]].size(); j++) {
+			se.insert(a[x[i]][j]);
+		}
+		for (int j = 0; j < a[x[i + 1]].size(); j++) {
+			if (se.find(a[x[i + 1]][j]) != se.end()) cnt++;
+		}
+	}
+	res = min(res, cnt);
+}
+
+void Try(int i) {
+	for (int j = 1; j <= n; j++) {
+		if (!used[j]) {
+			x[i] = j;
+			used[j] = 1;
+			if (i == n) process();
+			else Try(i + 1);
+			used[j] = 0;
+		}
+	}
 }
 
 int main(){
-    quick();
-    cin >> n;
-    v.pb("0");
-    for(int i = 1; i <= n; i++){
-        string x; cin >> x;
-        v.pb(x);
-    }
-    Try(1, 0, 0);
-    cout << min_val;
+	int t;
+	t = 1;
+	while(t--) {
+		nhap();
+		Try(1);
+		cout << res << endl;
+	}
 }
-/*
-
-*/

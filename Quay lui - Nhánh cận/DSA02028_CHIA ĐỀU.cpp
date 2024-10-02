@@ -1,40 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define quick() ios_base::sync_with_stdio(false); cin.tie(0);
-#define pb push_back
 using ll = long long;
 int mod = 1e9 + 7;
 
-int n, k, a[10000], res, sum;
+int n, k, res, a[10001];
 
-void Try(int pos, int s, int x, int cnt){
-    if(cnt == k && pos == n){
-        res++;
-        return;
-    }
-    for(int j = pos; j < n; j++){
-        s += a[j];
-        if(s == x)
-            Try(j + 1, 0, x, cnt + 1);
-    }
+void Try(int i, int collect, int sum, int cnt) {
+	if (i == n + 1 && cnt == k) {
+		res++;
+		return;
+	}
+	for (int j = i; j <= n; j++) {
+		collect += a[j];
+		if (collect == sum) {
+			Try(j + 1, 0, sum, cnt + 1);
+		}
+	}
 }
 
 int main(){
-    quick();
-    cin >> n >> k;
-    sum = 0, res = 0;
-    for(int i = 0; i < n; i++){
-        cin >> a[i];
-        sum += a[i];
-    }   
-    if(sum % k != 0){
-        cout << 0;
-        return 0;
+    int t; 
+	t = 1;
+    while(t--){
+    	res = 0;
+    	int sum = 0;
+		cin >> n >> k;
+		for (int i = 1; i <= n; i++) {
+			cin >> a[i];
+			sum += a[i];
+		}
+		if (sum % k != 0) {
+			cout << 0 << endl;
+		}
+		else {
+			Try(1, 0, sum / k, 0);
+    		cout << res << endl;
+		}
     }
-    Try(0, 0, sum / k, 0);
-    cout << res;
 }
-/*
-
-*/
